@@ -26,6 +26,7 @@ public class Select extends AppCompatActivity {
     }
     @Override
     protected void onResume() {
+        Log.d("hi", "hi");
         super.onResume();
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://connectjuniordesign.firebaseio.com");
