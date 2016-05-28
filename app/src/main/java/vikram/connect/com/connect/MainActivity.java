@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private HashMap<String, HashSet<String>> wordMap;
     private LinearLayout layout1;
     private static String cmon = "";
+
     TextToSpeech tts;
     @Override
     protected void onResume(){

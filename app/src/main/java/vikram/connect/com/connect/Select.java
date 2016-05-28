@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,14 +32,21 @@ public class Select extends AppCompatActivity {
     public static final String TAG = "MyTag";
     private RequestQueue queue;
     Firebase ref;
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select);
-
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        addDrawerItems();
     }
-
+    private void addDrawerItems() {
+        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -82,7 +91,7 @@ public class Select extends AppCompatActivity {
                         // Display the first 500 characters of the response string.
                         try{
                             JSONObject js = new JSONObject(response);
-                            Log.d("hi", js.toString(2));
+                            Log.d("hi", js.toString(2)); // 2 for printing in a pretty way
                             Log.d("a", "a");
                         } catch (JSONException e) {
                             e.printStackTrace();
