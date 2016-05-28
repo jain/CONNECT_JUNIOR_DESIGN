@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -45,11 +46,13 @@ public class Select extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
-
+    private ListView modules;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select);
+
+        // for image http://www.androidinterview.com/android-custom-listview-with-image-and-text-using-arrayadapter/
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
@@ -122,6 +125,15 @@ public class Select extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        modules = (ListView)findViewById(R.id.modules);
+        JSONObject modulesJSON = loadJSONFromAsset();
+        ArrayList<String> moduleNames = new ArrayList<String>();
+        Iterator<String> iter = modulesJSON.keys();
+        while (iter.hasNext()) {
+            moduleNames.add(iter.next());
+        }
+        ArrayAdapter moduleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moduleNames);
+        modules.setAdapter(moduleAdapter);
         /*Firebase.setAndroidContext(this);
         ref = new Firebase("https://connectjuniordesign.firebaseio.com");
         ref.addValueEventListener(new ValueEventListener() {
@@ -154,7 +166,7 @@ public class Select extends AppCompatActivity {
                 // Something went wrong!
             }
         }*/
-        queue = Volley.newRequestQueue(this);
+        /*queue = Volley.newRequestQueue(this);
         String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -175,7 +187,7 @@ public class Select extends AppCompatActivity {
                 Log.d("no", "no");
             }
         });
-        queue.add(stringRequest);
+        queue.add(stringRequest);*/
     }
 
     public JSONObject loadJSONFromAsset() {
