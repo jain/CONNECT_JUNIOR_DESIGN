@@ -1,0 +1,33 @@
+{
+  "Module Name" : {
+    "edited" : 0,
+    "phrases" : {
+      "phrase 1 part 1" : ".asd",
+      "phrase 2 part 1" : {
+        "phrase 2 part 2" : ".asd"
+      },
+      "phrase 3 part 1" : {
+        "phrase 3 part 2" : {
+          "phrase 3 part 3" : ".asd"
+        }
+      }
+    },
+    "word links" : {
+      "word" : "video link"
+    }
+  },
+  "Pet Smart" : {
+    "editted" : 0,
+    "phrases" : {
+      "where's the" : {
+        "cat food" : {
+          "please" : ".asd"
+        },
+        "dog food" : ".asd"
+      }
+    },
+    "word inks" : {
+      "follow" : "www.google.com"
+    }
+  }
+}
