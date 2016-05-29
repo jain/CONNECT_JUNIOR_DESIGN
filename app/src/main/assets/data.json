@@ -1,10 +1,28 @@
 {
+  "General" : {
+    "edited" : 0,
+    "phrases" : {
+      "Excuse me" : ".asd",
+      "Hello" : ".asd",
+      "How much is it" : ".asd",
+      "No" : ".asd",
+      "Please say that again" : ".asd",
+      "Thank you" : ".asd",
+      "When" : ".asd",
+      "Where" : ".asd",
+      "Yes" : ".asd"
+    },
+    "word links" : {
+      "follow" : "www.google.com"
+    }
+  },
   "Module Name" : {
     "edited" : 0,
     "phrases" : {
       "phrase 1 part 1" : ".asd",
       "phrase 2 part 1" : {
-        "phrase 2 part 2" : ".asd"
+        "phrase 2 part 2" : ".asd",
+        "phrase 2 part2" : ".asd"
       },
       "phrase 3 part 1" : {
         "phrase 3 part 2" : {
@@ -19,14 +37,23 @@
   "Pet Smart" : {
     "editted" : 0,
     "phrases" : {
-      "where's the" : {
-        "cat food" : {
-          "please" : ".asd"
+      "Do you have" : ".asd",
+      "Where's the" : {
+        "cat food" : ".asd",
+        "cat litter" : {
+          "please" : ".asd",
+          "sir" : ".asd"
         },
-        "dog food" : ".asd"
+        "dog collars" : {
+          "please" : ".asd",
+          "sir" : ".asd"
+        },
+        "dog food" : ".asd",
+        "flea powder" : ".asd",
+        "leashes" : ".asd"
       }
     },
-    "word inks" : {
+    "word links" : {
       "follow" : "www.google.com"
     }
   }

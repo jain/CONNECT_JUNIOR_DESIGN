@@ -21,15 +21,17 @@ import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-    private ArrayList<String> sentences;
-    private ListView wordsList;
     private EditText command;
     private TextView input;
     private HashMap<String, String> map;
@@ -46,28 +48,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         map.put("follow", "trollololol");
         //test();
         //input.setText("follow the yellow brick road, follow, n00b");
-        sentences = new ArrayList<String>();
-        if (vikram.connect.com.connect.Select.state == 0){
-            fillSentences0();
-        } else {
-            fillSentences1();
-        }
         wordMap = new HashMap<>();
-        fillMap();
+        try {
+            fillMap();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         layout1 = (LinearLayout) findViewById(R.id.list1);
         remake("");
-    }
-
-    private void fillSentences0() {
-        sentences.add("Hello");
-        sentences.add("Excuse me");
-        sentences.add("Please say that again");
-        sentences.add("Yes");
-        sentences.add("No");
-        sentences.add("Where");
-        sentences.add("When");
-        sentences.add("Thank you");
-        sentences.add("How much is it");
     }
 
     @Override
@@ -139,9 +127,37 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         command.setSelection(command.getText().length());
     }
-
-    private void fillMap() {
-        for (String sen: sentences){
+    private void fillMapRecursion(String soFar, JSONObject next) throws JSONException {
+        Iterator<String> iter = next.keys();
+        while (iter.hasNext()) {
+            if (!wordMap.containsKey(soFar)){
+                wordMap.put(soFar, new HashSet<String>());
+            }
+            String word = iter.next();
+            wordMap.get(soFar).add(word.trim().toLowerCase());
+            boolean hi = next.get(word) instanceof JSONObject;
+            if(next.get(word) instanceof JSONObject){
+                boolean n00b = hi;
+                boolean maga = n00b;
+                fillMapRecursion((soFar + " " + word.trim().toLowerCase()).trim().toLowerCase(), next.getJSONObject(word));
+            }
+        }
+    }
+    private void fillMap() throws JSONException {
+        JSONObject phrases = Data.module.getJSONObject("phrases");
+        Iterator<String> iter = phrases.keys();
+        while (iter.hasNext()) {
+            String soFar = "";
+            if (!wordMap.containsKey(soFar)){
+                wordMap.put(soFar, new HashSet<String>());
+            }
+            String word = iter.next();
+            wordMap.get(soFar).add(word.trim().toLowerCase());
+            if(phrases.get(word) instanceof JSONObject){
+                fillMapRecursion(word.trim().toLowerCase(), phrases.getJSONObject(word));
+            }
+        }
+        /*for (String sen: sentences){
             String[] words = sen.trim().toLowerCase().split(",");
             String soFar = "";
             if (!wordMap.containsKey(soFar)){
@@ -155,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 }
                 wordMap.get(soFar).add(words[i+1].trim().toLowerCase());
             }
-        }
+        }*/
     }
 
     public static void clickify(TextView view, final String clickableText,  final ClickSpan.OnClickListener listener) {
@@ -178,16 +194,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if ((m == null) || !(m instanceof LinkMovementMethod)) {
             view.setMovementMethod(LinkMovementMethod.getInstance());
         }
-    }
-
-    public void fillSentences1(){
-        sentences.add("Where's the,cat food");
-        sentences.add("Where's the,dog food");
-        sentences.add("Where's the,flea powder");
-        sentences.add("Where's the,cat litter");
-        sentences.add("Where's the,dog collars");
-        sentences.add("Where's the,leashes");
-        sentences.add("Do you have");
     }
     public void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

@@ -36,7 +36,6 @@ import java.util.Iterator;
  * Created by vikram on 4/21/16.
  */
 public class Select extends AppCompatActivity {
-    static int state = 0;
     public static final String TAG = "MyTag";
     private RequestQueue queue;
     Firebase ref;
@@ -126,14 +125,26 @@ public class Select extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         modules = (ListView)findViewById(R.id.modules);
-        JSONObject modulesJSON = loadJSONFromAsset();
-        ArrayList<String> moduleNames = new ArrayList<String>();
-        Iterator<String> iter = modulesJSON.keys();
+        Data.modules = loadJSONFromAsset();
+        final ArrayList<String> moduleNames = new ArrayList<String>();
+        Iterator<String> iter = Data.modules.keys();
         while (iter.hasNext()) {
             moduleNames.add(iter.next());
         }
         ArrayAdapter moduleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moduleNames);
         modules.setAdapter(moduleAdapter);
+        modules.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    Data.module = Data.modules.getJSONObject(moduleNames.get(position));
+                    Intent intent = new Intent(Select.this, MainActivity.class);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    Toast.makeText(Select.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         /*Firebase.setAndroidContext(this);
         ref = new Firebase("https://connectjuniordesign.firebaseio.com");
         ref.addValueEventListener(new ValueEventListener() {
@@ -224,16 +235,6 @@ public class Select extends AppCompatActivity {
         if (queue != null) {
             queue.cancelAll(TAG);
         }
-    }
-
-    public void proceed(View v) {
-        if (((Button) v).getText().toString().toLowerCase().equals("petsmart")) {
-            state = 1;
-        } else {
-            state = 0;
-        }
-        Intent intent = new Intent(Select.this, MainActivity.class);
-        startActivity(intent);
     }
 
 }
