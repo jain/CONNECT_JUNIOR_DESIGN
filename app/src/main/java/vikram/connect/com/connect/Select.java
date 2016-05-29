@@ -1,18 +1,20 @@
 package vikram.connect.com.connect;
 
 import android.content.Intent;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.firebase.client.Firebase;
+import com.firebase.client.Transaction;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,13 +38,13 @@ import java.util.Iterator;
 /**
  * Created by vikram on 4/21/16.
  */
-public class Select extends AppCompatActivity {
+public class Select extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     public static final String TAG = "MyTag";
     private RequestQueue queue;
     Firebase ref;
-    private ListView mDrawerList;
+
+
     private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
@@ -51,17 +54,17 @@ public class Select extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select);
 
-        // for image http://www.androidinterview.com/android-custom-listview-with-image-and-text-using-arrayadapter/
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
 
-        addDrawerItems();
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mActivityTitle = getTitle().toString();
         setupDrawer();
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
     }
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -85,16 +88,15 @@ public class Select extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -110,17 +112,13 @@ public class Select extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private void addDrawerItems() {
-        String[] osArray = { "Edit Modules", "Download Modules" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Select.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        Log.d(item.getTitle().toString(), "asd");
+        return false;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -165,18 +163,7 @@ public class Select extends AppCompatActivity {
             @Override public void onCancelled(FirebaseError error) { }
 
         });*/
-        /*JSONObject modules = loadJSONFromAsset();
-        //modules.
-        Iterator<String> iter = modules.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = modules.get(key);
-                Log.d("val", value.toString());
-            } catch (JSONException e) {
-                // Something went wrong!
-            }
-        }*/
+
         /*queue = Volley.newRequestQueue(this);
         String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -204,21 +191,13 @@ public class Select extends AppCompatActivity {
     public JSONObject loadJSONFromAsset() {
         JSONObject jsonObj = null;
         try {
-
             InputStream is = getAssets().open("data.json");
-
             int size = is.available();
-
             byte[] buffer = new byte[size];
-
             is.read(buffer);
-
             is.close();
-
             String json = new String(buffer, "UTF-8");
-
             jsonObj = new JSONObject(json);
-
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
@@ -226,7 +205,6 @@ public class Select extends AppCompatActivity {
             e.printStackTrace();
         }
         return jsonObj;
-
     }
 
     @Override
@@ -236,5 +214,6 @@ public class Select extends AppCompatActivity {
             queue.cancelAll(TAG);
         }
     }
+
 
 }
