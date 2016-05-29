@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -45,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         super.onResume();
         cmon = "";
         map = new HashMap<String, String>();
-        map.put("follow", "trollololol");
-        //test();
-        //input.setText("follow the yellow brick road, follow, n00b");
+        try {
+            genMap();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         wordMap = new HashMap<>();
         try {
             fillMap();
@@ -56,6 +57,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         layout1 = (LinearLayout) findViewById(R.id.list1);
         remake("");
+    }
+
+    protected void genMap() throws JSONException {
+        JSONObject links = Data.module.getJSONObject("word links");
+        Iterator iter = links.keys();
+        while (iter.hasNext()){
+            String wrd = iter.next().toString();
+            map.put(wrd, links.getString(wrd));
+        }
     }
 
     @Override
@@ -157,21 +167,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 fillMapRecursion(word.trim().toLowerCase(), phrases.getJSONObject(word));
             }
         }
-        /*for (String sen: sentences){
-            String[] words = sen.trim().toLowerCase().split(",");
-            String soFar = "";
-            if (!wordMap.containsKey(soFar)){
-                wordMap.put(soFar, new HashSet<String>());
-            }
-            wordMap.get(soFar).add(words[0].trim().toLowerCase());
-            for (int i = 0; i<words.length-1; i++){
-                soFar = (soFar + " " + words[i]).trim().toLowerCase();
-                if (!wordMap.containsKey(soFar)){
-                    wordMap.put(soFar, new HashSet<String>());
-                }
-                wordMap.get(soFar).add(words[i+1].trim().toLowerCase());
-            }
-        }*/
     }
 
     public static void clickify(TextView view, final String clickableText,  final ClickSpan.OnClickListener listener) {
