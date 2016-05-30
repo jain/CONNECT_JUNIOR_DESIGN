@@ -1,6 +1,7 @@
 {
   "General" : {
     "edited" : 0,
+    "icon" : "http://shop.donaldjtrump.com/v/vspfiles/photos/DTC-MAGACAP-RD-2.jpg",
     "phrases" : {
       "Excuse me" : ".asd",
       "Hello" : ".asd",
@@ -18,6 +19,7 @@
   },
   "Module Name" : {
     "edited" : 0,
+    "icon" : "http://i2.kym-cdn.com/photos/images/original/001/078/898/e4b.png",
     "phrases" : {
       "phrase 1 part 1" : ".asd",
       "phrase 2 part 1" : {
@@ -36,6 +38,7 @@
   },
   "Pet Smart" : {
     "editted" : 0,
+    "icon" : "http://pets.petsmart.com/_common/images/mobile/petsmart-logo.gif",
     "phrases" : {
       "Do you have" : ".asd",
       "Where's the" : {

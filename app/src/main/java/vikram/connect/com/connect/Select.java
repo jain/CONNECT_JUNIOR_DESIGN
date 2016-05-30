@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -18,14 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.firebase.client.Firebase;
-import com.firebase.client.Transaction;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,10 +33,6 @@ import java.util.Iterator;
  */
 public class Select extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     public static final String TAG = "MyTag";
-    private RequestQueue queue;
-    Firebase ref;
-
-
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
@@ -55,6 +44,7 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
         setContentView(R.layout.select);
 
 
+        //http://blog.xebia.com/android-design-support-navigationview/
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
@@ -65,6 +55,7 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
     }
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -95,17 +86,11 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -115,6 +100,10 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        if (item.getTitle().toString().toLowerCase().contains("download")){
+            Intent intent = new Intent(Select.this, DownloadActivity.class);
+            startActivity(intent);
+        }
         Log.d(item.getTitle().toString(), "asd");
         return false;
     }
@@ -123,7 +112,38 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
     protected void onResume() {
         super.onResume();
         modules = (ListView)findViewById(R.id.modules);
-        Data.modules = loadJSONFromAsset();
+        try {
+            Data.modules = new JSONObject(Data.read(this));
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                Data.modules =  new JSONObject(loadJSONFromAsset());
+            } catch (JSONException e1) {
+                Data.modules = new JSONObject();
+            }
+            try {
+                Data.save(this);
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            try {
+                Data.modules =  new JSONObject(loadJSONFromAsset());
+            } catch (JSONException e1) {
+                Data.modules = new JSONObject();
+            }
+            try {
+                Data.save(this);
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
         final ArrayList<String> moduleNames = new ArrayList<String>();
         Iterator<String> iter = Data.modules.keys();
         while (iter.hasNext()) {
@@ -143,76 +163,24 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
                 }
             }
         });
-        /*Firebase.setAndroidContext(this);
-        ref = new Firebase("https://connectjuniordesign.firebaseio.com");
-        ref.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println(snapshot.getValue());  //prints "Do you have data? You'll love Firebase."
-                for (DataSnapshot child : snapshot.getChildren()){
-                    String module = child.getKey();
-                    Log.d(module, module);
-                    for (DataSnapshot moduleInner :child.getChildren()){
-                        System.out.println(moduleInner);
-                    }
-                }
-                snapshot.getValue();
-            }
-
-            @Override public void onCancelled(FirebaseError error) { }
-
-        });*/
-
-        /*queue = Volley.newRequestQueue(this);
-        String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        try{
-                            JSONObject js = new JSONObject(response);
-                            Log.d("hi", js.toString(2)); // 2 for printing in a pretty way
-                            Log.d("a", "a");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("no", "no");
-            }
-        });
-        queue.add(stringRequest);*/
     }
 
-    public JSONObject loadJSONFromAsset() {
-        JSONObject jsonObj = null;
+    public String loadJSONFromAsset() {
+        String json = "";
         try {
             InputStream is = getAssets().open("data.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            String json = new String(buffer, "UTF-8");
-            jsonObj = new JSONObject(json);
+            json = new String(buffer, "UTF-8");
+
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-        return jsonObj;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (queue != null) {
-            queue.cancelAll(TAG);
-        }
+        return json;
     }
 
 
