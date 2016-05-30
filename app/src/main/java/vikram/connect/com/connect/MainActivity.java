@@ -213,12 +213,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             for (String word : map.keySet()){
                 //origString = origString.replaceAll(word,"<a href=\"http://google.com/\">"+word+"</a>");
                 //origString = origString.replaceAll(word,"<a href=\"http://vik.com/\">"+word+"</a>");
+                final String wrd = word;
                 clickify(input, word, new ClickSpan.OnClickListener() {
                     @Override
                     public void onClick() {
                         //Toast.makeText(MainActivity.this, "Whale was clicked!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, ImageActivity.class);
-                        startActivity(intent);
+                        try {
+                            Data.video = Data.module.getJSONObject("word links").getString(wrd);
+                            Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+                            startActivity(intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         //MainActivity.this.finish();
                     }
                 });

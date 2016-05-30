@@ -16,12 +16,12 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImageActivity">
+        <activity android:name=".VideoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".Select">
+        <activity android:name=".SelectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

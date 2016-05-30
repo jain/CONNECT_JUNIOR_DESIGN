@@ -16,10 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -36,7 +32,7 @@ import java.util.Iterator;
 /**
  * Created by vikram on 4/21/16.
  */
-public class Select extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class SelectActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     public static final String TAG = "MyTag";
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -49,7 +45,7 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
         setContentView(R.layout.select);
 
 
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(Select.this));
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SelectActivity.this));
         //http://blog.xebia.com/android-design-support-navigationview/
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
@@ -107,7 +103,7 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         if (item.getTitle().toString().toLowerCase().contains("download")){
-            Intent intent = new Intent(Select.this, DownloadActivity.class);
+            Intent intent = new Intent(SelectActivity.this, DownloadActivity.class);
             startActivity(intent);
         }
         Log.d(item.getTitle().toString(), "asd");
@@ -163,10 +159,10 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
                     Data.module = Data.modules.getJSONObject(moduleNames.get(position));
-                    Intent intent = new Intent(Select.this, MainActivity.class);
+                    Intent intent = new Intent(SelectActivity.this, MainActivity.class);
                     startActivity(intent);
                 } catch (JSONException e) {
-                    Toast.makeText(Select.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });*/

@@ -20,6 +20,7 @@ public class Data {
     public static JSONObject modules = null;
     public static JSONObject module = null;
     public static JSONObject firebaseJS = null;
+    public static String video = "";
     public static void save(Context context) throws JSONException, IOException {
         File path = context.getFilesDir();
         File file = new File(path, "CONNECT.json");
