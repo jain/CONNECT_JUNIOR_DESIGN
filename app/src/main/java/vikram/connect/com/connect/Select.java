@@ -4,13 +4,15 @@ import android.content.Intent;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
+
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
+
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +42,14 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
-    private ListView modules;
+    private RecyclerView modules;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select);
 
 
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(Select.this));
         //http://blog.xebia.com/android-design-support-navigationview/
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
@@ -111,7 +117,6 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
     @Override
     protected void onResume() {
         super.onResume();
-        modules = (ListView)findViewById(R.id.modules);
         try {
             Data.modules = new JSONObject(Data.read(this));
         } catch (IOException e) {
@@ -143,13 +148,15 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
                 e1.printStackTrace();
             }
         }
-
-        final ArrayList<String> moduleNames = new ArrayList<String>();
-        Iterator<String> iter = Data.modules.keys();
-        while (iter.hasNext()) {
-            moduleNames.add(iter.next());
+        modules = (RecyclerView)findViewById(R.id.modules);
+        modules.setLayoutManager(new LinearLayoutManager(this));
+        try {
+            recInit();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        ArrayAdapter moduleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moduleNames);
+
+        /*ArrayAdapter moduleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moduleNames);
         modules.setAdapter(moduleAdapter);
         modules.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -162,7 +169,20 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
                     Toast.makeText(Select.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
+
+    }
+
+    private void recInit() throws JSONException {
+        ArrayList<String[]> moduleNames = new ArrayList<String[]>();
+        Iterator<String> it = Data.modules.keys();
+        while (it.hasNext()) {
+            String name = it.next();
+            String[] data = new String[]{name, Data.modules.getJSONObject(name).getString("icon")};
+            moduleNames.add(data);
+        }
+        SelectAdapter adapter = new SelectAdapter(moduleNames, this);
+        modules.setAdapter(adapter);
 
     }
 
@@ -182,6 +202,13 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
         }
         return json;
     }
-
+    @Override
+    public void onBackPressed() {
+        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }

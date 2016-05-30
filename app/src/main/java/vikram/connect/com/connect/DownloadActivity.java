@@ -8,16 +8,12 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,7 +31,6 @@ public class DownloadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(DownloadActivity.this));
         oldRv = (RecyclerView) findViewById(R.id.old);
         newRv = (RecyclerView) findViewById(R.id.newOnes);
     }
