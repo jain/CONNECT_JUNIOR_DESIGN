@@ -1,10 +1,12 @@
 package vikram.connect.com.connect;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -31,14 +33,15 @@ public class EditLongClickListener implements Button.OnLongClickListener {
     }
     @Override
     public boolean onLongClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(act);
-        builder.setTitle("Edit Phrase");
-        final EditText phrTxt = new EditText(act);
-
+        final Dialog dialog = new Dialog(act);
+        dialog.setContentView(R.layout.long_click);
+        dialog.setTitle("Edit Phrase");
+        final EditText phrTxt = (EditText) dialog.findViewById(R.id.edit);
         phrTxt.setText(word);
-        builder.setView(phrTxt);
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        Button editButton = (Button) dialog.findViewById(R.id.editButton);
+        editButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if (!phrTxt.getText().toString().trim().equals(word)) {
                     try {
                         Data.module.put("editted", "1");
@@ -55,11 +58,13 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                         Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
                     }
                 }
+                dialog.cancel();
             }
         });
-        builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
+        Button delButton = (Button) dialog.findViewById(R.id.delButton);
+        delButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 try {
                     Data.module.put("editted", "1");
                     JSONObject parent = jsonMap.get(soFar);
@@ -73,10 +78,43 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                     e.printStackTrace();
                     Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
                 }
+                dialog.cancel();
             }
         });
-        // Create the AlertDialog object and return it
-        builder.create().show();
+        final EditText child = (EditText) dialog.findViewById(R.id.child);
+        Button addChild = (Button) dialog.findViewById(R.id.addChild);
+        addChild.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String childText = child.getText().toString().trim().toLowerCase();
+                try {
+                    Data.module.put("editted", "1");
+                    JSONObject parent = jsonMap.get(soFar);
+                    if (parent.get(word) instanceof JSONObject){
+                        if (parent.getJSONObject(word).has(childText)){
+                            Toast.makeText(act, "Already Has Specified Child", Toast.LENGTH_LONG).show();
+                        } else {
+                            parent.getJSONObject(word).put(childText, ".asd");
+                            Data.save(act);
+                        }
+                    } else {
+                        JSONObject childJS = new JSONObject();
+                        childJS.put(childText, ".asd");
+                        parent.put(word, childJS);
+                        Data.save(act);
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
+                }
+                act.onResume();
+                act.command.setText(soFar);
+                dialog.cancel();
+            }
+        });
+        dialog.show();
         return true;
     }
 }

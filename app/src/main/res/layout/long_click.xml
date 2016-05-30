@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TextView
+        android:paddingTop="10dp"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Edit Phrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:textSize="25sp"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/editButton"
+            android:text="Save"
+            android:layout_gravity="center"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:textSize="25sp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/delButton"
+            android:text="Delete"
+            android:layout_gravity="center"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:textSize="25sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:paddingTop="60dp"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Add Child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/child"
+        android:hint="Child Name"
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:textSize="25sp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/addChild"
+        android:text="Add Child"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:layout_width="wrap_content"
+        android:textSize="25sp"
+        android:layout_height="wrap_content" />
+</LinearLayout>

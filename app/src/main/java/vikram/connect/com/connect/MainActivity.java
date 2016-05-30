@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onResume(){
         super.onResume();
         cmon = "";
+        command.setText("");
         map = new HashMap<String, String>();
         try {
             genMap();

@@ -67,14 +67,33 @@ public class EditActivity extends AppCompatActivity {
 
     }
     public void addPhrase (View view){
-        /*String soFar = cmon.toLowerCase().trim();
-        if (!wordMap.containsKey(soFar)){
-            Toast.makeText(this, "Please ensure valid JSON chain", Toast.LENGTH_LONG).show();
-            return;
-        }
         String phr = phraseText.getText().toString().trim().toLowerCase();
         if(phr.isEmpty()){
             Toast.makeText(this, "Please enter a valid phrase", Toast.LENGTH_LONG).show();
+            dialog.cancel();
+            return;
+        }
+        try {
+            JSONObject phrases = Data.module.getJSONObject("phrases");
+            if(phrases.has(phr)){
+                Toast.makeText(this, "Entered Phrase Already Exists", Toast.LENGTH_LONG).show();
+            } else {
+                phrases.put(phr, ".asd");
+                Data.save(this);
+                onResume();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "JSON Err", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Saving Err", Toast.LENGTH_LONG).show();
+        }
+        dialog.cancel();
+        /*String soFar = cmon.toLowerCase().trim();
+        if (!wordMap.containsKey(soFar)){
+            Toast.makeText(this, "Please ensure valid, not contained JSON chain", Toast.LENGTH_LONG).show();
             return;
         }
         if(!wordMap.containsKey(soFar + " " + phr)){
