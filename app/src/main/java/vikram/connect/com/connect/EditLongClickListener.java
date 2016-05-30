@@ -32,7 +32,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
     @Override
     public boolean onLongClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
-        builder.setTitle("Phrase");
+        builder.setTitle("Edit Phrase");
         final EditText phrTxt = new EditText(act);
 
         phrTxt.setText(word);
@@ -57,9 +57,22 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                 }
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+                try {
+                    Data.module.put("editted", "1");
+                    JSONObject parent = jsonMap.get(soFar);
+                    parent.remove(word);
+                    Data.save(act);
+                    act.onResume();
+                    act.command.setText(soFar);
+                } catch (JSONException e) {
+                    Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
+                }
             }
         });
         // Create the AlertDialog object and return it

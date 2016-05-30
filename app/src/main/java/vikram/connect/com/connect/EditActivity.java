@@ -67,16 +67,24 @@ public class EditActivity extends AppCompatActivity {
 
     }
     public void addPhrase (View view){
+        /*String soFar = cmon.toLowerCase().trim();
+        if (!wordMap.containsKey(soFar)){
+            Toast.makeText(this, "Please ensure valid JSON chain", Toast.LENGTH_LONG).show();
+            return;
+        }
         String phr = phraseText.getText().toString().trim().toLowerCase();
         if(phr.isEmpty()){
             Toast.makeText(this, "Please enter a valid phrase", Toast.LENGTH_LONG).show();
             return;
         }
-        if(!wordMap.containsKey(cmon + " " + phr)){
-            jsonMap.get(cmon);
+        if(!wordMap.containsKey(soFar + " " + phr)){
+            jsonMap.get(soFar);
+            JSONObject parent = jsonMap.get(soFar);
+            parent.put(phr, parent.get(word));
+            parent.remove(word);
         } else {
             Toast.makeText(this, "Phrase already exists.", Toast.LENGTH_LONG).show();
-        }
+        }*/
         dialog.cancel();
     }
     public void addLink(View view) {
