@@ -181,7 +181,7 @@ public class Select extends AppCompatActivity implements NavigationView.OnNaviga
             String[] data = new String[]{name, Data.modules.getJSONObject(name).getString("icon")};
             moduleNames.add(data);
         }
-        SelectAdapter adapter = new SelectAdapter(moduleNames, this);
+        SelectAdapter adapter = new SelectAdapter(moduleNames, this, modules);
         modules.setAdapter(adapter);
 
     }

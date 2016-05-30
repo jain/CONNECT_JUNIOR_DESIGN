@@ -24,20 +24,21 @@ import java.util.ArrayList;
  */
 public class SelectAdapter extends RecyclerView.Adapter<SelViewHolder> {
     private ArrayList<String[]> data;
-    private AppCompatActivity act;
+    private final View.OnClickListener mOnClickListener;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SelectAdapter(ArrayList<String[]> myDataset, AppCompatActivity act) {
+    public SelectAdapter(ArrayList<String[]> myDataset, AppCompatActivity act, RecyclerView rView) {
         data = myDataset;
-        this.act = act;
+        mOnClickListener = new SelectClickListener(rView, data, act);
     }
 
     @Override
     public SelViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.select_cv, viewGroup, false);
+        v.setOnClickListener(mOnClickListener);
         SelViewHolder svh = new SelViewHolder(v);
         return svh;
     }
@@ -47,8 +48,6 @@ public class SelectAdapter extends RecyclerView.Adapter<SelViewHolder> {
         svh.name.setText(data.get(i)[0]);
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(data.get(i)[1], svh.photo);
-        svh.act = act;
-        svh.module = data.get(i)[0];
     }
 
     @Override
