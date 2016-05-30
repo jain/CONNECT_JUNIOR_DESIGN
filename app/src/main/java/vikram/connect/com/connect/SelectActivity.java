@@ -44,7 +44,6 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select);
 
-
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SelectActivity.this));
         //http://blog.xebia.com/android-design-support-navigationview/
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -151,22 +150,6 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        /*ArrayAdapter moduleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moduleNames);
-        modules.setAdapter(moduleAdapter);
-        modules.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    Data.module = Data.modules.getJSONObject(moduleNames.get(position));
-                    Intent intent = new Intent(SelectActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } catch (JSONException e) {
-                    Toast.makeText(SelectActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });*/
-
     }
 
     private void recInit() throws JSONException {

@@ -1,9 +1,13 @@
 package vikram.connect.com.connect;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Spannable;
@@ -12,7 +16,9 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, NavigationView.OnNavigationItemSelectedListener{
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
     private EditText command;
     private TextView input;
@@ -37,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private HashMap<String, HashSet<String>> wordMap;
     private LinearLayout layout1;
     private static String cmon = "";
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String mActivityTitle;
 
     TextToSpeech tts;
     @Override
@@ -92,6 +102,68 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
         input = (TextView) findViewById(R.id.input);
+
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_main);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_main);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mActivityTitle = getTitle().toString();
+        setupDrawer();
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        if (item.getTitle().toString().toLowerCase().contains("Edit")){
+            Intent intent = new Intent(MainActivity.this, EditActivity.class);
+            startActivity(intent);
+        }
+        Log.d(item.getTitle().toString(), "asd");
+        return false;
     }
 
     private void remake(String soFar) {
