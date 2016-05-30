@@ -76,6 +76,27 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
                 act.recreate();
             }
         });
+        ovh.update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Object dat = Data.firebaseJS.get(data.get(index)[0]);
+                    Data.modules.remove(data.get(index)[0]);
+                    Data.modules.put(data.get(index)[0], dat);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                try {
+                    Data.save(act);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                act.recreate();
+            }
+        });
     }
 
     @Override

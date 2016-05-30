@@ -30,7 +30,6 @@ public class DownloadActivity extends AppCompatActivity {
     private RequestQueue queue;
     private HashSet<String> moduleNames;
 
-    private JSONObject firebaseJS;
     public static final String TAG = "MyTag";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,31 +56,9 @@ public class DownloadActivity extends AppCompatActivity {
     private void initializeNew() {
         queue = Volley.newRequestQueue(this);
         String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
-        final ArrayList<String[]> modules = new ArrayList<String[]>();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        try{
-                            JSONObject js = new JSONObject(response);
-                            firebaseJS = js;
-                            Iterator<String> it = js.keys();
 
-                            while(it.hasNext()){
-                                String name = it.next();
-                                if (!moduleNames.contains(name)){
-                                    String[] data = new String[]{name, js.getJSONObject(name).getString("icon")};
-                                    modules.add(data);
-                                }
-                            }
-                            DownloadAdapter adapter = new DownloadAdapter(modules);
-                            newRv.setAdapter(adapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new VolleyRequest(newRv, moduleNames, this), new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(DownloadActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
