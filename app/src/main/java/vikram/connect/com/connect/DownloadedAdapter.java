@@ -81,7 +81,7 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
             public void onClick(View view) {
                 try {
                     Object dat = Data.firebaseJS.get(data.get(index)[0]);
-                    Data.modules.remove(data.get(index)[0]);
+                    //Data.modules.remove(data.get(index)[0]);
                     Data.modules.put(data.get(index)[0], dat);
                 } catch (JSONException e) {
                     e.printStackTrace();

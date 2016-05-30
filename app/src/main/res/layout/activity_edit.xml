@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:onClick="newPhrase"
-            android:text="Add New Phrase" />
+            android:text="Add New Phrase/Link" />
 
         <ListView
             android:id="@+id/wordLinks"

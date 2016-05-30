@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         remake("");
     }
 
+
+
     protected void genMap() throws JSONException {
         JSONObject links = Data.module.getJSONObject("word links");
         Iterator iter = links.keys();
@@ -218,10 +220,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
             String word = iter.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
-            boolean hi = next.get(word) instanceof JSONObject;
             if(next.get(word) instanceof JSONObject){
-                boolean n00b = hi;
-                boolean maga = n00b;
                 fillMapRecursion((soFar + " " + word.trim().toLowerCase()).trim().toLowerCase(), next.getJSONObject(word));
             }
         }
@@ -284,14 +283,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             String origString = matches.get(0);
             input.setText(origString);
             for (String word : map.keySet()){
-                //origString = origString.replaceAll(word,"<a href=\"http://google.com/\">"+word+"</a>");
-                //origString = origString.replaceAll(word,"<a href=\"http://vik.com/\">"+word+"</a>");
                 final String wrd = word;
                 clickify(input, word, new ClickSpan.OnClickListener() {
                     @Override
                     public void onClick() {
-                        //Toast.makeText(MainActivity.this, "Whale was clicked!", Toast.LENGTH_SHORT).show();
                         try {
+                            Data.videoWord = wrd;
                             Data.video = Data.module.getJSONObject("word links").getString(wrd);
                             Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                             startActivity(intent);
@@ -299,11 +296,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                             e.printStackTrace();
                         }
 
-                        //MainActivity.this.finish();
                     }
                 });
             }
-            //input.setText(Html.fromHtml(origString));
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

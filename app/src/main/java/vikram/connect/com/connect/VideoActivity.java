@@ -31,6 +31,7 @@ public class VideoActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        getActionBar().setTitle(Data.videoWord + " Explained");
         mwv.loadUrl(Data.video);
     }
 }
