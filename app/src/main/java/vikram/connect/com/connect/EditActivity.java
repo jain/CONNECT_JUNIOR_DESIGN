@@ -91,20 +91,6 @@ public class EditActivity extends AppCompatActivity {
             Toast.makeText(this, "Saving Err", Toast.LENGTH_LONG).show();
         }
         dialog.cancel();
-        /*String soFar = cmon.toLowerCase().trim();
-        if (!wordMap.containsKey(soFar)){
-            Toast.makeText(this, "Please ensure valid, not contained JSON chain", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if(!wordMap.containsKey(soFar + " " + phr)){
-            jsonMap.get(soFar);
-            JSONObject parent = jsonMap.get(soFar);
-            parent.put(phr, parent.get(word));
-            parent.remove(word);
-        } else {
-            Toast.makeText(this, "Phrase already exists.", Toast.LENGTH_LONG).show();
-        }*/
-        dialog.cancel();
     }
     public void addLink(View view) {
         String word = wordText.getText().toString().trim().toLowerCase();
