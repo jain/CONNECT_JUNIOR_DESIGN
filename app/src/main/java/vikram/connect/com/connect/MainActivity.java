@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onResume(){
         super.onResume();
         cmon = "";
-        command.setText("");
         map = new HashMap<String, String>();
         try {
             genMap();
@@ -67,8 +66,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        layout1 = (LinearLayout) findViewById(R.id.list1);
-        remake("");
+        command.setText("");
     }
 
 
@@ -88,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         setContentView(R.layout.activity_main);
         tts = new TextToSpeech(this, this);
         command = (EditText) findViewById(R.id.command);
+        layout1 = (LinearLayout) findViewById(R.id.list1);
         command.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
