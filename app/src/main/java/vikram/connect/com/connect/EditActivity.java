@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,10 +100,10 @@ public class EditActivity extends AppCompatActivity {
         }
         if(!map.containsKey(word)){
             try {
-                Data.module.put("editted", "1");
+                Data.module.put("edited", "1");
                 JSONObject wordLinks = Data.module.getJSONObject("word links");
-                Data.save(this);
                 wordLinks.put(word, link);
+                Data.save(this);
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "JSON Parsing caused error", Toast.LENGTH_LONG).show();

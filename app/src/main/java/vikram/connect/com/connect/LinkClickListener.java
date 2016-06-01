@@ -42,8 +42,7 @@ public class LinkClickListener implements AdapterView.OnItemClickListener {
                     public void onClick(DialogInterface dialog, int id) {
                         if (!link.getText().toString().trim().equals(url)) {
                             try {
-                                //Data.module.remove("editted");
-                                Data.module.put("editted", "1");
+                                Data.module.put("edited", "1");
                                 JSONObject wordLinks = Data.module.getJSONObject("word links");
                                 wordLinks.put(title, link.getText().toString().trim());
                                 Data.save(act);
@@ -57,9 +56,22 @@ public class LinkClickListener implements AdapterView.OnItemClickListener {
                         }
                     }
                 });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
+                        try {
+                            //Data.module.remove("editted");
+                            Data.module.put("edited", "1");
+                            JSONObject wordLinks = Data.module.getJSONObject("word links");
+                            wordLinks.remove(title);
+                            Data.save(act);
+                            act.setupListView();
+                        } catch (JSONException e) {
+                            Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
         // Create the AlertDialog object and return it

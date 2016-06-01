@@ -1,19 +1,15 @@
 package vikram.connect.com.connect;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -44,7 +40,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
             public void onClick(View view) {
                 if (!phrTxt.getText().toString().trim().equals(word)) {
                     try {
-                        Data.module.put("editted", "1");
+                        Data.module.put("edited", "1");
                         JSONObject parent = jsonMap.get(soFar);
                         parent.put(phrTxt.getText().toString().trim(), parent.get(word));
                         parent.remove(word);
@@ -66,7 +62,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
             @Override
             public void onClick(View view) {
                 try {
-                    Data.module.put("editted", "1");
+                    Data.module.put("edited", "1");
                     JSONObject parent = jsonMap.get(soFar);
                     parent.remove(word);
                     Data.save(act);
@@ -88,7 +84,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
             public void onClick(View view) {
                 String childText = child.getText().toString().trim().toLowerCase();
                 try {
-                    Data.module.put("editted", "1");
+                    Data.module.put("edited", "1");
                     JSONObject parent = jsonMap.get(soFar);
                     if (parent.get(word) instanceof JSONObject){
                         if (parent.getJSONObject(word).has(childText)){

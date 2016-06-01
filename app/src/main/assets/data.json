@@ -3,15 +3,15 @@
     "edited" : 0,
     "icon" : "http://shop.donaldjtrump.com/v/vspfiles/photos/DTC-MAGACAP-RD-2.jpg",
     "phrases" : {
-      "Excuse me" : ".asd",
-      "Hello" : ".asd",
-      "How much is it" : ".asd",
-      "No" : ".asd",
-      "Please say that again" : ".asd",
-      "Thank you" : ".asd",
-      "When" : ".asd",
-      "Where" : ".asd",
-      "Yes" : ".asd"
+      "excuse me" : ".asd",
+      "hello" : ".asd",
+      "how much is it" : ".asd",
+      "no" : ".asd",
+      "please say that again" : ".asd",
+      "thank you" : ".asd",
+      "when" : ".asd",
+      "where" : ".asd",
+      "yes" : ".asd"
     },
     "word links" : {
       "follow" : "https://www.youtube.com/watch?v=4ud3iDCZ_MA"
@@ -40,8 +40,8 @@
     "editted" : 0,
     "icon" : "http://pets.petsmart.com/_common/images/mobile/petsmart-logo.gif",
     "phrases" : {
-      "Do you have" : ".asd",
-      "Where's the" : {
+      "do you have" : ".asd",
+      "where's the" : {
         "cat food" : ".asd",
         "cat litter" : {
           "please" : ".asd",
