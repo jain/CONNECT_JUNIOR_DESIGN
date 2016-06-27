@@ -1,0 +1,88 @@
+{
+  "General" : {
+    "edited" : 0,
+    "icon" : "http://shop.donaldjtrump.com/v/vspfiles/photos/DTC-MAGACAP-RD-2.jpg",
+    "phrases" : {
+      "Excuse me" : ".asd",
+      "Hello" : ".asd",
+      "How much is it" : ".asd",
+      "No" : ".asd",
+      "Please say that again" : ".asd",
+      "Thank you" : ".asd",
+      "When" : ".asd",
+      "Where" : ".asd",
+      "Yes" : ".asd"
+    },
+    "word links" : {
+      "follow" : "www.google.com"
+    }
+  },
+  "Module Name" : {
+    "edited" : 0,
+    "icon" : "http://i2.kym-cdn.com/photos/images/original/001/078/898/e4b.png",
+    "phrases" : {
+      "phrase 1 part 1" : ".asd",
+      "phrase 2 part 1" : {
+        "phrase 2 part 2" : ".asd",
+        "phrase 2 part2" : ".asd"
+      },
+      "phrase 3 part 1" : {
+        "phrase 3 part 2" : {
+          "phrase 3 part 3" : ".asd"
+        }
+      }
+    },
+    "word links" : {
+      "word" : "video link"
+    }
+  },
+  "Pet Smart" : {
+    "editted" : 0,
+    "icon" : "http://pets.petsmart.com/_common/images/mobile/petsmart-logo.gif",
+    "phrases" : {
+      "Do you have" : ".asd",
+      "Where's the" : {
+        "cat food" : ".asd",
+        "cat litter" : {
+          "please" : ".asd",
+          "sir" : ".asd"
+        },
+        "dog collars" : {
+          "please" : ".asd",
+          "sir" : ".asd"
+        },
+        "dog food" : ".asd",
+        "flea powder" : ".asd",
+        "leashes" : ".asd"
+      }
+    },
+    "word links" : {
+      "follow" : "www.google.com"
+    }
+  },
+  "WalMart" : {
+    "editted" : 0,
+    "icon" : "https://upload.wikimedia.org/wikipedia/en/thumb/1/14/Walmart_Spark.svg/113px-Walmart_Spark.svg.png",
+    "phrases" : {
+      "Do you have" : ".asd",
+      "Where's the" : {
+        "cat food" : ".asd",
+        "cat litter" : {
+          "please" : ".asd",
+          "sir" : ".asd"
+        },
+        "dog collars" : {
+          "please" : ".asd",
+          "sir" : ".asd"
+        },
+        "dog food" : ".asd",
+        "flea powder" : ".asd",
+        "leashes" : ".asd"
+      }
+    },
+    "word links" : {
+      "follow" : "www.google.com"
+    }
+  }
+}
+
