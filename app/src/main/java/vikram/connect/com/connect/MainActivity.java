@@ -282,21 +282,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String origString = matches.get(0);
             input.setText(origString);
-
-            for (String word : map.keySet()){
+            String[] splitWords = origString.split(" ");
+            for (String word : splitWords){
                 final String wrd = word;
                 clickify(input, word, new ClickSpan.OnClickListener() {
                     @Override
                     public void onClick() {
-                        try {
-                            Data.videoWord = wrd;
-                            Data.video = Data.module.getJSONObject("word links").getString(wrd);
-                            Intent intent = new Intent(MainActivity.this, VideoActivity.class);
-                            startActivity(intent);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        Data.videoWord = wrd;
+                        Data.video = "http://www.signasl.org/sign/"+wrd;
+                        Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+                        startActivity(intent);
                     }
                 });
             }
