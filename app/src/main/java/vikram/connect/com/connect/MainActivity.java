@@ -2,9 +2,9 @@ package vikram.connect.com.connect;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String origString = matches.get(0);
             input.setText(origString);
+
             for (String word : map.keySet()){
                 final String wrd = word;
                 clickify(input, word, new ClickSpan.OnClickListener() {
