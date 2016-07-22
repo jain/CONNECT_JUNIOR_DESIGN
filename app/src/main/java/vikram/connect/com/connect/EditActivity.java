@@ -33,7 +33,6 @@ public class EditActivity extends AppCompatActivity {
     private LinearLayout layout1;
     EditText command;
     private static String cmon = "";
-    private ListView lView;
 
     private EditText phraseText;
     private EditText wordText;
@@ -44,7 +43,6 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         layout1 = (LinearLayout) findViewById(R.id.list2);
-        lView = (ListView) findViewById(R.id.wordLinks);
         command = (EditText) findViewById(R.id.command2);
         command.addTextChangedListener(new TextWatcher() {
             @Override
@@ -91,32 +89,6 @@ public class EditActivity extends AppCompatActivity {
         }
         dialog.cancel();
     }
-    public void addLink(View view) {
-        String word = wordText.getText().toString().trim().toLowerCase();
-        String link = linkText.getText().toString().trim();
-        if(word.isEmpty()||link.isEmpty()){
-            Toast.makeText(this, "Please enter a valid phrase", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if(!map.containsKey(word)){
-            try {
-                Data.module.put("edited", "1");
-                JSONObject wordLinks = Data.module.getJSONObject("word links");
-                wordLinks.put(word, link);
-                Data.save(this);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "JSON Parsing caused error", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Something went wrong while saving", Toast.LENGTH_LONG).show();
-            }
-            setupListView();
-        } else {
-            Toast.makeText(this, "Word already exists.", Toast.LENGTH_LONG).show();
-        }
-        dialog.cancel();
-    }
     public void newPhrase(View view){
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.phrase);
@@ -124,9 +96,6 @@ public class EditActivity extends AppCompatActivity {
 
         // set the custom dialog components - text, image and button
         phraseText = (EditText) dialog.findViewById(R.id.phrase);
-        wordText = (EditText) dialog.findViewById(R.id.word);
-        linkText = (EditText) dialog.findViewById(R.id.link);
-
 
         dialog.show();
     }
@@ -142,22 +111,6 @@ public class EditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         remake("");
-        setupListView();
-    }
-
-    public void setupListView() {
-        lView.invalidate();
-        map = new HashMap<String, String>();
-        links = new ArrayList<String>();
-        try {
-            genMap();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        ArrayAdapter linksAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, links);
-        lView.setAdapter(linksAdapter);
-        lView.setOnItemClickListener(new LinkClickListener(map, links, this));
-        lView.postInvalidate();
     }
 
     protected void genMap() throws JSONException {
