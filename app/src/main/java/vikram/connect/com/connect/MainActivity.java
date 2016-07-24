@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                   @Override
                                   public void run() {
                                       Toast.makeText(ma,"Your message is being said",
-                                              Toast.LENGTH_LONG).show();
+                                              Toast.LENGTH_SHORT).show();
                                   }
                               }
 

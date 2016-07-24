@@ -15,10 +15,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:text="1) Open the preffered module
-2) Select words from the phrase tree or type in text
-3) Press the &apos;Enter your command&apos; button to play the text aloud
-4) Press the &apos;Listen&apos; button to record their response and convert it to text\n"
+        android:text="
+1) Open the preffered module\n
+2) Select words from the phrase tree or type in text\n
+3) Press the &apos;Enter your command&apos; button to play the text aloud\n
+4) Press the &apos;Listen&apos; button to record their response and convert it to text"
         android:textSize="16sp" />
 
     <TextView
@@ -32,7 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:text="1) After pressing the listen button, text will appear at the bottom of the screen
+        android:text="
+1) After pressing the listen button, text will appear at the bottom of the screen
 2) Press on a word to look it up in the ASL sign language dictionary
 "
         android:textSize="16sp" />
@@ -49,7 +51,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:textSize="16sp"
-        android:text="1) Click on the 3 lines on the top left corner
+        android:text="
+1) Click on the 3 lines on the top left corner\n
 2) Press the 'Download', 'Update', or 'Delete' button on a module from the list
 " />
 
@@ -65,8 +68,9 @@
         android:layout_height="match_parent"
         android:paddingLeft="10dp"
         android:textSize="16sp"
-        android:text="1) Open the preferred module
-2) Press the 3 lines on the top left corner
+        android:text="
+1) Open the preferred module\n
+2) Press the 3 lines on the top left corner\n
 3) Press on a word you wish to change" />
 
 </LinearLayout>

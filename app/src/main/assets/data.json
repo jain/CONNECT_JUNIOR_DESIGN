@@ -1,7 +1,6 @@
 {
   "General" : {
-    "edited" : 0,
-    "icon" : "http://timerdesign.com/images/startdesign/chat-icon-300x300.png",
+    "icon" : "http://www.clipartbest.com/cliparts/Rid/LEd/RidLEdpi9.png",
     "phrases" : {
       "excuse me" : ".asd",
       "hello" : ".asd",
@@ -19,13 +18,9 @@
       "please say that again" : ".asd",
       "thank you" : ".asd",
       "yes" : ".asd"
-    },
-    "word links" : {
-      "follow" : "https://www.youtube.com/watch?v=4ud3iDCZ_MA"
     }
   },
   "Pet Smart" : {
-    "editted" : 0,
     "icon" : "http://pets.petsmart.com/_common/images/mobile/petsmart-logo.gif",
     "phrases" : {
       "do you have" : ".asd",
@@ -44,9 +39,6 @@
         "flea powder" : ".asd",
         "leashes" : ".asd"
       }
-    },
-    "word links" : {
-      "follow" : "https://www.youtube.com/watch?v=4ud3iDCZ_MA"
     }
   }
 }
