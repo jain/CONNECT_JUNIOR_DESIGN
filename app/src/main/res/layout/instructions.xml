@@ -26,6 +26,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
+        android:text="Word Lookup\n"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="
+1) After pressing the listen button, text will appear at the bottom of the screen\n
+2) Press on a word to look it up in the ASL sign language dictionary\n"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
         android:text="Download or delete modules"
         android:textSize="24sp" />
 
