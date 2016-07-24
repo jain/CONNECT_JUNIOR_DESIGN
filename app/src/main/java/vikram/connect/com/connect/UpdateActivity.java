@@ -4,8 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
@@ -60,6 +66,20 @@ public class UpdateActivity extends AppCompatActivity {
         }
         DownloadedAdapter adapter = new DownloadedAdapter(modules, this);
         oldRv.setAdapter(adapter);
+    }
+
+    private void initializeNew() {
+        queue = Volley.newRequestQueue(this);
+        String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new VolleyRequest(newRv, moduleNames, this), new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(UpdateActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(stringRequest);
     }
 
 }
