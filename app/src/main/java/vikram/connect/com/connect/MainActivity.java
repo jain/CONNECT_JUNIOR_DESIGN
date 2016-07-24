@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
     private EditText command;
     private TextView input;
-    private HashMap<String, String> map;
     private HashMap<String, HashSet<String>> wordMap;
     private LinearLayout layout1;
     private static String cmon = "";
@@ -54,30 +55,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onResume(){
         super.onResume();
         cmon = "";
-        map = new HashMap<String, String>();
-        try {
-            genMap();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        wordMap = new HashMap<>();
+        wordMap = new HashMap<String, HashSet<String>>();
         try {
             fillMap();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         command.setText("");
-    }
-
-
-
-    protected void genMap() throws JSONException {
-        JSONObject links = Data.module.getJSONObject("word links");
-        Iterator iter = links.keys();
-        while (iter.hasNext()){
-            String wrd = iter.next().toString();
-            map.put(wrd, links.getString(wrd));
-        }
     }
 
     @Override
@@ -270,8 +254,27 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 "Speech recognition demo");
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
-    public void voiceRec(View v){
-        startVoiceRecognitionActivity();
+    public void voiceRec(View v) throws InterruptedException {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+        tts.speak("Please speak into the phone after the beep.", TextToSpeech.QUEUE_ADD, map);
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+
+            }
+
+            @Override
+            public void onDone(String utteranceId) {
+                startVoiceRecognitionActivity();
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+            }
+        });
+
+
     }
 
     @Override
@@ -300,7 +303,25 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
     public void speak(View v){
-        tts.speak(command.getText().toString(), TextToSpeech.QUEUE_ADD, null);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+        tts.speak(command.getText().toString(), TextToSpeech.QUEUE_FLUSH, map);
+        int len = command.getText().toString().length();
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String utteranceId) {
+                //Toast.
+            }
+
+            @Override
+            public void onDone(String utteranceId) {
+
+            }
+
+            @Override
+            public void onError(String utteranceId) {
+            }
+        });
         command.setText("");
     }
     @Override

@@ -29,6 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".DownloadActivity" />
+        <activity android:name=".UpdateActivity" />
+        <activity android:name=".InstructionsActivity" />
         <activity android:name=".EditActivity"></activity>
     </application>
 

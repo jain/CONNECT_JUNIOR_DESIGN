@@ -31,13 +31,13 @@ public class DownloadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        oldRv = (RecyclerView) findViewById(R.id.old);
+        //oldRv = (RecyclerView) findViewById(R.id.old);
         newRv = (RecyclerView) findViewById(R.id.newOnes);
     }
     @Override
     public void onResume(){
         super.onResume();
-        oldRv.setLayoutManager(new LinearLayoutManager(this));
+        //oldRv.setLayoutManager(new LinearLayoutManager(this));
         newRv.setLayoutManager(new LinearLayoutManager(this));
         moduleNames = new HashSet<String>();
         try {
@@ -77,7 +77,7 @@ public class DownloadActivity extends AppCompatActivity {
             String[] data = new String[]{name, Data.modules.getJSONObject(name).getString("icon")};
             modules.add(data);
         }
-        DownloadedAdapter adapter = new DownloadedAdapter(modules, this);
-        oldRv.setAdapter(adapter);
+        //DownloadedAdapter adapter = new DownloadedAdapter(modules, this);
+        //oldRv.setAdapter(adapter);
     }
 }

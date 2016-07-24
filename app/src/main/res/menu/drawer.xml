@@ -5,6 +5,11 @@
             android:id="@+id/navigation_item_1"
             android:checked="true"
             android:icon="@drawable/update"
-            android:title="Download/Update Modules"/>
+            android:title="Update Modules"/>
+        <item
+            android:id="@+id/navigation_item_2"
+            android:checked="true"
+            android:icon="@drawable/download"
+            android:title="Download New Modules"/>
     </group>
 </menu>

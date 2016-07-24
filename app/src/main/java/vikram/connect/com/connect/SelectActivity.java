@@ -32,6 +32,7 @@ import java.util.Iterator;
 /**
  * Created by vikram on 4/21/16.
  */
+
 public class SelectActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     public static final String TAG = "MyTag";
     private DrawerLayout mDrawerLayout;
@@ -103,6 +104,10 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(MenuItem item) {
         if (item.getTitle().toString().toLowerCase().contains("download")){
             Intent intent = new Intent(SelectActivity.this, DownloadActivity.class);
+            startActivity(intent);
+        }
+        else if (item.getTitle().toString().toLowerCase().contains("update")){
+            Intent intent = new Intent(SelectActivity.this, UpdateActivity.class);
             startActivity(intent);
         }
         Log.d(item.getTitle().toString(), "asd");
@@ -188,6 +193,11 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void instructions (View v){
+        Intent intent = new Intent(SelectActivity.this, InstructionsActivity.class);
+        startActivity(intent);
     }
 
 }
