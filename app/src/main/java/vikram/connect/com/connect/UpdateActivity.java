@@ -45,6 +45,7 @@ public class UpdateActivity extends AppCompatActivity {
         moduleNames = new HashSet<String>();
         try {
             initializeOld();
+            initializeNew();
         } catch (JSONException e) {
             e.printStackTrace();
         }
