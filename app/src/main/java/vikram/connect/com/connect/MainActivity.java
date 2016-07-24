@@ -307,15 +307,32 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
         tts.speak(command.getText().toString(), TextToSpeech.QUEUE_FLUSH, map);
         int len = command.getText().toString().length();
+        final MainActivity ma = this;
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String utteranceId) {
-                //Toast.
+                runOnUiThread(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      Toast.makeText(ma,"Your message is being said",
+                                              Toast.LENGTH_LONG).show();
+                                  }
+                              }
+
+                );
             }
 
             @Override
             public void onDone(String utteranceId) {
+                runOnUiThread(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      Toast.makeText(ma,"Your message has ended",
+                                              Toast.LENGTH_SHORT).show();
+                                  }
+                              }
 
+                );
             }
 
             @Override
