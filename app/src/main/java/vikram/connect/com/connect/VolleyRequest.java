@@ -45,8 +45,10 @@ public class VolleyRequest implements Response.Listener<String> {
                     modules.add(data);
                 }
             }
-            DownloadAdapter adapter = new DownloadAdapter(modules, act);
-            newRv.setAdapter(adapter);
+            if (newRv!=null) {
+                DownloadAdapter adapter = new DownloadAdapter(modules, act);
+                newRv.setAdapter(adapter);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

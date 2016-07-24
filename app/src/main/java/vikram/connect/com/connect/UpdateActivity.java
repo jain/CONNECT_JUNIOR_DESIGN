@@ -74,7 +74,7 @@ public class UpdateActivity extends AppCompatActivity {
         String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new VolleyRequest(newRv, moduleNames, this), new Response.ErrorListener() {
+                new VolleyRequest(null, moduleNames, this), new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(UpdateActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
