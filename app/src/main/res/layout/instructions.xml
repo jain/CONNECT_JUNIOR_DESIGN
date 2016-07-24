@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
-        android:text="Download/Update Modules"
+        android:text="Converse\n"
         android:textSize="24sp" />
 
     <TextView
@@ -16,29 +16,17 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:text="
-To converse:
-1) Open the preffered module
-2) Select words from the phrase tree or type in text
-3) Press the 'Enter your command' button to play the text aloud
-4) Press the 'Listen' button to record their response
-
-To download or delete modules:
-1) Click on the 3 lines on the top left corner
-2) Select to download or update modules
-3) Press the 3 lines on the top left corner
-4) Press the 'Download' or 'Delete' button on a module from the list
-
-To edit modules:
-1) Open the preferred module
-2) Press the 3 lines on the top left corner
-3) Press on a word you wish to change"
+1) Open the preffered module\n
+2) Select words from the phrase tree or type in text\n
+3) Press the 'Enter your command' button to play the text aloud\n
+4) Press the 'Listen' button to record their response\n"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
-        android:text="Saying Phrases"
+        android:text="Download or delete modules\n"
         android:textSize="24sp" />
 
     <TextView
@@ -47,7 +35,26 @@ To edit modules:
         android:paddingLeft="10dp"
         android:textSize="16sp"
         android:text="
-1) Click on the 3 lines on the top left corner
-2) Select to download or update modules" />
+1) Click on the 3 lines on the top left corner\n
+2) Select to download or update modules\n
+3) Press the 3 lines on the top left corner\n
+4) Press the 'Download' or 'Delete' button on a module from the list\n" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="Edit modules\n"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:textSize="16sp"
+        android:text="
+1) Open the preferred module\n
+2) Press the 3 lines on the top left corner\n
+3) Press on a word you wish to change\n" />
 
 </LinearLayout>
