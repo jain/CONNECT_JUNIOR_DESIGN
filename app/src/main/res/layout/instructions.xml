@@ -16,9 +16,22 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:text="
+To converse:
+1) Open the preffered module
+2) Select words from the phrase tree or type in text
+3) Press the "Enter your command" button to play the text aloud
+4) Press the "Listen" button to record their response
+
+To download or delete modules:
 1) Click on the 3 lines on the top left corner
 2) Select to download or update modules
-3) On the screen select to download or update the module by clicking the buttons to the corresponding to your action\n\n"
+3) Press the 3 lines on the top left corner
+4) Press the "Download" or "Delete" button on a module from the list
+
+To edit modules:
+1) Open the preferred module
+2) Press the 3 lines on the top left corner
+3) Press on a word you wish to change"
         android:textSize="16sp" />
 
     <TextView
