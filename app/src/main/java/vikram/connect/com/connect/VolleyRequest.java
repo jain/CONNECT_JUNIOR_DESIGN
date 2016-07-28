@@ -3,7 +3,6 @@ package vikram.connect.com.connect;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
 import org.json.JSONException;

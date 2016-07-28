@@ -38,23 +38,24 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, NavigationView.OnNavigationItemSelectedListener {
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
     private EditText command;
     private TextView input;
     private HashMap<String, HashSet<String>> wordMap;
     private LinearLayout layout1;
-    private static String cmon = "";
+    private static String typedString = "";
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
     TextToSpeech tts;
+
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        cmon = "";
+        typedString = "";
         wordMap = new HashMap<String, HashSet<String>>();
         try {
             fillMap();
@@ -84,13 +85,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
             @Override
             public void afterTextChanged(Editable editable) {
-                MainActivity.cmon = editable.toString();
-                remake(editable.toString());
+                MainActivity.typedString = editable.toString();
+                remake();
             }
         });
         input = (TextView) findViewById(R.id.input);
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_main);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_main);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -123,11 +124,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -145,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        if (item.getTitle().toString().toLowerCase().contains("edit")){
+        if (item.getTitle().toString().toLowerCase().contains("edit")) {
             Intent intent = new Intent(MainActivity.this, EditActivity.class);
             startActivity(intent);
         }
@@ -153,16 +156,21 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return false;
     }
 
-    private void remake(String soFar) {
+    /**
+     * method for creating the phrase tree on the screen
+     */
+    private void remake() {
+        // invalidate the view
         layout1.removeAllViews();
         layout1.invalidate();
-        soFar = cmon.toLowerCase().trim();
-        //soFar = soFar.toLowerCase().trim();
-        if (!wordMap.containsKey(soFar)){
+        String soFar = typedString.toLowerCase().trim();
+        // check if the string exists in the hashmap, if so we can generate the phrase tree from this point
+        if (!wordMap.containsKey(soFar)) {
             command.setSelection(command.getText().length());
             return;
         }
-        for (String word: wordMap.get(soFar)){
+        // generate the first linear layout and populate it
+        for (String word : wordMap.get(soFar)) {
             LinearLayout layout2 = new LinearLayout(this);
             layout2.setOrientation(LinearLayout.HORIZONTAL);
             layout2.setLayoutParams(new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 10.0f));
@@ -170,18 +178,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Button first = new Button(this);
             first.setText(word);
             final String w2 = word;
+            // if a phrase is selected add it to the speech which will be said
             first.setOnClickListener(new Button.OnClickListener() {
-                public void onClick(View v) {
+                /**
+                 * method which is called when the button is clicked, it will append phrase to the edittext
+                 * @param view
+                 */
+                public void onClick(View view) {
                     command.setText(command.getText().toString() + " " + w2);
                 }
             });
+            // generate the second layer of the phrase tree
             layout2.addView(first);
             layout2.addView(new TextView(this));
             if (wordMap.containsKey((soFar + " " + word).trim().toLowerCase())) {
                 LinearLayout layout3 = new LinearLayout(this);
                 layout3.setOrientation(LinearLayout.VERTICAL);
                 layout3.setGravity(Gravity.CENTER);
-
+                // add each phrase to second layer
                 for (String word2 : wordMap.get((soFar + " " + word).trim().toLowerCase())) {
                     TextView sec = new TextView(this);
                     sec.setTextSize(20);
@@ -196,36 +210,45 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         command.setSelection(command.getText().length());
     }
+
+    /**
+     * generate the map for the phrase tree based on the json data loaded in the app
+     * @param soFar
+     * @param next
+     * @throws JSONException
+     */
     private void fillMapRecursion(String soFar, JSONObject next) throws JSONException {
-        Iterator<String> iter = next.keys();
-        while (iter.hasNext()) {
-            if (!wordMap.containsKey(soFar)){
+        // recurse through the keys in the JSON object from loaded data
+        Iterator<String> it = next.keys();
+        while (it.hasNext()) {
+            if (!wordMap.containsKey(soFar)) {
                 wordMap.put(soFar, new HashSet<String>());
             }
-            String word = iter.next();
+            String word = it.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
-            if(next.get(word) instanceof JSONObject){
+            if (next.get(word) instanceof JSONObject) {
                 fillMapRecursion((soFar + " " + word.trim().toLowerCase()).trim().toLowerCase(), next.getJSONObject(word));
             }
         }
     }
+
     private void fillMap() throws JSONException {
         JSONObject phrases = Data.module.getJSONObject("phrases");
         Iterator<String> iter = phrases.keys();
         while (iter.hasNext()) {
             String soFar = "";
-            if (!wordMap.containsKey(soFar)){
+            if (!wordMap.containsKey(soFar)) {
                 wordMap.put(soFar, new HashSet<String>());
             }
             String word = iter.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
-            if(phrases.get(word) instanceof JSONObject){
+            if (phrases.get(word) instanceof JSONObject) {
                 fillMapRecursion(word.trim().toLowerCase(), phrases.getJSONObject(word));
             }
         }
     }
 
-    public static void clickify(TextView view, final String clickableText,  final ClickSpan.OnClickListener listener) {
+    public static void clickify(TextView view, final String clickableText, final ClickSpan.OnClickListener listener) {
         CharSequence text = view.getText();
         String string = text.toString();
         ClickSpan span = new ClickSpan(listener);
@@ -234,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (start == -1) return;
 
         if (text instanceof Spannable) {
-            ((Spannable)text).setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ((Spannable) text).setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else {
             SpannableString s = SpannableString.valueOf(text);
             s.setSpan(span, start, end, Spanned.SPAN_MARK_MARK);
@@ -246,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             view.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
+
     public void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -254,9 +278,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 "Speech recognition demo");
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
+
     public void voiceRec(View v) throws InterruptedException {
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
         tts.speak("Please speak into the phone after the beep.", TextToSpeech.QUEUE_ADD, map);
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
@@ -286,13 +311,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             String origString = matches.get(0);
             input.setText(origString);
             String[] splitWords = origString.split(" ");
-            for (String word : splitWords){
+            for (String word : splitWords) {
                 final String wrd = word;
                 clickify(input, word, new ClickSpan.OnClickListener() {
                     @Override
                     public void onClick() {
                         Data.videoWord = wrd;
-                        Data.video = "http://www.signasl.org/sign/"+wrd;
+                        Data.video = "http://www.signasl.org/sign/" + wrd;
                         Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                         startActivity(intent);
 
@@ -302,9 +327,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-    public void speak(View v){
+
+    public void speak(View v) {
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
         tts.speak(command.getText().toString(), TextToSpeech.QUEUE_FLUSH, map);
         int len = command.getText().toString().length();
         final MainActivity ma = this;
@@ -314,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 runOnUiThread(new Runnable() {
                                   @Override
                                   public void run() {
-                                      Toast.makeText(ma,"Your message is being said",
+                                      Toast.makeText(ma, "Your message is being said",
                                               Toast.LENGTH_SHORT).show();
                                   }
                               }
@@ -327,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 runOnUiThread(new Runnable() {
                                   @Override
                                   public void run() {
-                                      Toast.makeText(ma,"Your message has ended",
+                                      Toast.makeText(ma, "Your message has ended",
                                               Toast.LENGTH_SHORT).show();
                                   }
                               }
@@ -341,10 +367,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
         command.setText("");
     }
+
     @Override
     public void onInit(int status) {
         tts.setLanguage(Locale.US);
     }
+
     @Override
     public void onBackPressed() {
         if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {

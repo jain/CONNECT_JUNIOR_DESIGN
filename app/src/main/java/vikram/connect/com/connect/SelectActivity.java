@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -32,97 +31,134 @@ import java.util.Iterator;
 /**
  * Created by vikram on 4/21/16.
  */
-
-public class SelectActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class SelectActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "MyTag";
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-
     private RecyclerView modules;
+
+    /**
+     * method to generate the view when initially loaded
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // set layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select);
-
+        // instantiate imageview which will be used throughout the app for loading images
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SelectActivity.this));
-        //http://blog.xebia.com/android-design-support-navigationview/
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        // instantiate navigation drawer
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
-
+        // set activity name
         mActivityTitle = getTitle().toString();
+        // customize the drawer for app
         setupDrawer();
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
     }
+
+    /**
+     * configure navigation drawer for app
+     */
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
+            /**
+             * Called when a drawer has settled in a completely open state.
+             * @param drawerView
+             */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("Navigation!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            /** Called when a drawer has settled in a completely closed state. */
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             * @param view
+             */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-
+        // allow easy toggling of nav drawer
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
+    /**
+     * default method for when the configuation is changed, simply set to new config
+     * @param newConfig
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+    /**
+     * default method for after the navigationd drawer is created
+     * @param savedInstanceState
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
+    /**
+     * default method for toggling item in navigation drawer
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * when an item from the navigation view is selected perform the corresponding action
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        if (item.getTitle().toString().toLowerCase().contains("download")){
+        // if download button selected, go to the corresponding activity
+        if (item.getTitle().toString().toLowerCase().contains("download")) {
             Intent intent = new Intent(SelectActivity.this, DownloadActivity.class);
             startActivity(intent);
-        }
-        else if (item.getTitle().toString().toLowerCase().contains("update")){
+        } // else if update selected go to that activity
+        else if (item.getTitle().toString().toLowerCase().contains("update")) {
             Intent intent = new Intent(SelectActivity.this, UpdateActivity.class);
             startActivity(intent);
         }
-        Log.d(item.getTitle().toString(), "asd");
         return false;
     }
 
+    /**
+     * when the activity is resumed, reload the data and recreate the recycler view
+     */
     @Override
     protected void onResume() {
         super.onResume();
+        // reload the data
         try {
             Data.modules = new JSONObject(Data.read(this));
         } catch (IOException e) {
             e.printStackTrace();
             try {
-                Data.modules =  new JSONObject(loadJSONFromAsset());
+                Data.modules = new JSONObject(loadJSONFromAsset());
             } catch (JSONException e1) {
                 Data.modules = new JSONObject();
             }
@@ -136,7 +172,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         } catch (JSONException e) {
             e.printStackTrace();
             try {
-                Data.modules =  new JSONObject(loadJSONFromAsset());
+                Data.modules = new JSONObject(loadJSONFromAsset());
             } catch (JSONException e1) {
                 Data.modules = new JSONObject();
             }
@@ -148,7 +184,8 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
                 e1.printStackTrace();
             }
         }
-        modules = (RecyclerView)findViewById(R.id.modules);
+        // recreate the recycler view
+        modules = (RecyclerView) findViewById(R.id.modules);
         modules.setLayoutManager(new LinearLayoutManager(this));
         try {
             recInit();
@@ -157,6 +194,11 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
+    /**
+     * generate data for the recycler view and generate the recycler view for the activity
+     *
+     * @throws JSONException
+     */
     private void recInit() throws JSONException {
         ArrayList<String[]> moduleNames = new ArrayList<String[]>();
         Iterator<String> it = Data.modules.keys();
@@ -167,9 +209,13 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         }
         SelectAdapter adapter = new SelectAdapter(moduleNames, this, modules);
         modules.setAdapter(adapter);
-
     }
 
+    /**
+     * interpret the json data stored on the phone
+     *
+     * @return
+     */
     public String loadJSONFromAsset() {
         String json = "";
         try {
@@ -186,6 +232,10 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         }
         return json;
     }
+
+    /**
+     * when back button pressed close drawer if open, else continue with default action
+     */
     @Override
     public void onBackPressed() {
         if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -195,7 +245,12 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    public void instructions (View v){
+    /**
+     * If clicked on instructions button go to designated activity
+     *
+     * @param v
+     */
+    public void instructions(View v) {
         Intent intent = new Intent(SelectActivity.this, InstructionsActivity.class);
         startActivity(intent);
     }
