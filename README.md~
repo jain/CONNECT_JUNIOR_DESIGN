@@ -4,6 +4,8 @@ PLEASE NOTE CODE DOCUMENTATION IMPORTANT NOTICE:
 
 	All of the code docummentation is in Code Documentation (JavaDoc)
 	
+	To see the documentation PLEASE download the folder to your local computer and open whichever .html file you would like to view
+	
 	If you want the documentation for each class please navigate to /Code Documentation (JavaDoc)/vikram/connect/com/connect
 
 	Else please open index.html to see code structure and activity summaries

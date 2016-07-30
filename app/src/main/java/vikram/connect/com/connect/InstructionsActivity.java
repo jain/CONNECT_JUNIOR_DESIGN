@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
  * It is static so nothing much happens
  */
 public class InstructionsActivity extends AppCompatActivity {
+
     /**
      * Loads the content from the xml file and displays it
      *

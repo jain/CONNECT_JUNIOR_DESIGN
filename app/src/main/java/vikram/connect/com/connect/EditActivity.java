@@ -49,6 +49,7 @@ public class EditActivity extends AppCompatActivity {
         layout1 = (LinearLayout) findViewById(R.id.list2);
         command = (EditText) findViewById(R.id.command2);
         command.addTextChangedListener(new TextWatcher() {
+
             /**
              * Called just before text written into EditText
              * Default required method by Interface, but is unused in this application

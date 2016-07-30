@@ -70,6 +70,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
      */
     public void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
             /**
              * Called when a drawer has settled in a completely open state.
              *

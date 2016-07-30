@@ -24,6 +24,10 @@ The layout files corresponding to activites are found in app/src/main/res/layout
 This app also made use of a navigation drawer, and thus a menu was used which is found in app/src/main/res/menu
 
 The code is formatted according to proper Android Conventions (ctrl + alt + l in Android Studio will reveal so)
+	
+	All the inner variables unless required are private
+	
+	All the inner methods are public
 
 To run this code:
 

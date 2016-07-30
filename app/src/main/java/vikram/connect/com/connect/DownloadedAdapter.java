@@ -94,6 +94,7 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
         final int index = i;
         // set listener for deleting
         ovh.deleteB.setOnClickListener(new View.OnClickListener() {
+
             /**
              * Deletes the module from current local storage and regenerates the UI to reflect this
              *
@@ -117,6 +118,7 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
         });
         // set listener for updating
         ovh.update.setOnClickListener(new View.OnClickListener() {
+
             /**
              * Updates the module in current local storage and regenerates the UI to reflect this
              *
