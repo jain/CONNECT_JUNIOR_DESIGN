@@ -50,7 +50,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         // set layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
-        // instantiate imageview which will be used throughout the app for loading images
+        // instantiate ImageView which will be used throughout the app for loading images
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SelectActivity.this));
         // instantiate navigation drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -66,12 +66,13 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * configure navigation drawer for app
+     * Configure navigation drawer for app
      */
     public void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
             /**
              * Called when a drawer has settled in a completely open state.
+             *
              * @param drawerView view of which drawer is child
              */
             public void onDrawerOpened(View drawerView) {
@@ -82,6 +83,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
 
             /**
              * Called when a drawer has settled in a completely closed state.
+             *
              * @param view view of which drawer was child
              */
             public void onDrawerClosed(View view) {
@@ -96,7 +98,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * default method for when the configuation is changed, simply set to new config
+     * Default method for when the configuration is changed, simply set to new config
      *
      * @param newConfig the new configuration
      */
@@ -107,7 +109,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * default method for after the navigation drawer is created
+     * Default method for after the navigation drawer is created
      *
      * @param savedInstanceState data which is saved inside drawer context
      */
@@ -118,10 +120,10 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * default method for toggling item in navigation drawer
+     * Default method for toggling item in navigation drawer
      *
      * @param item menu item selected
-     * @return
+     * @return the success at selecting specified item
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -132,10 +134,10 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * when an item from the navigation view is selected perform the corresponding action
+     * When an item from the navigation view is selected perform the corresponding action
      *
-     * @param item
-     * @return
+     * @param item selected item
+     * @return success at navigating to specified item in menu
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -152,7 +154,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * when the activity is resumed, reload the data and recreate the recycler view
+     * When the activity is resumed, reload the data and recreate the recycler view
      */
     @Override
     public void onResume() {
@@ -161,12 +163,14 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
         try {
             Data.modules = new JSONObject(Data.read(this));
         } catch (IOException e) {
+            // if issues getting data from app try reloading data from the local storage
             e.printStackTrace();
             try {
                 Data.modules = new JSONObject(loadJSONFromAsset());
             } catch (JSONException e1) {
                 Data.modules = new JSONObject();
             }
+            // ensure data is synced
             try {
                 Data.save(this);
             } catch (JSONException e1) {
@@ -175,12 +179,14 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
                 e1.printStackTrace();
             }
         } catch (JSONException e) {
+            // if issues getting data from app try reloading data from the local storage
             e.printStackTrace();
             try {
                 Data.modules = new JSONObject(loadJSONFromAsset());
             } catch (JSONException e1) {
                 Data.modules = new JSONObject();
             }
+            // ensure data is synced
             try {
                 Data.save(this);
             } catch (JSONException e1) {
@@ -189,7 +195,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
                 e1.printStackTrace();
             }
         }
-        // recreate the recycler view
+        // recreate the RecyclerView
         modules = (RecyclerView) findViewById(R.id.modules);
         modules.setLayoutManager(new LinearLayoutManager(this));
         try {
@@ -200,7 +206,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * generate data for the recycler view and generate the recycler view for the activity
+     * Generate data for the RecyclerView and generate the RecyclerView for the activity
      *
      * @throws JSONException
      */
@@ -217,7 +223,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * interpret the json data stored on the phone
+     * Method interprets the json data stored on the phone
      *
      * @return json data stored on phone
      */
@@ -239,7 +245,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * when back button pressed close drawer if open, else continue with default action
+     * When back button pressed close drawer if open, else continue with default action
      */
     @Override
     public void onBackPressed() {

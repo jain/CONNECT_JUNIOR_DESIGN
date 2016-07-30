@@ -11,7 +11,7 @@ public class InstructionsActivity extends AppCompatActivity {
     /**
      * Loads the content from the xml file and displays it
      *
-     * @param savedInstanceState
+     * @param savedInstanceState data stored in application
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -18,18 +18,18 @@ import java.util.HashMap;
  * Allows user to use this to edit components of the phrase tree
  */
 public class EditLongClickListener implements Button.OnLongClickListener {
-    private String soFar;
-    private HashMap<String, JSONObject> jsonMap;
-    private EditActivity act;
-    private String word;
+    private String soFar; // reference to input string so far to decide state of phrase tree
+    private HashMap<String, JSONObject> jsonMap; // reference to map of strings following word
+    private EditActivity act; // reference to calling activity
+    private String word; // reference to word which was long clicked
 
     /**
      * Constructor which takes in params which will be necessary in case of edits made
      *
-     * @param act
-     * @param soFar
-     * @param jsonMap
-     * @param word
+     * @param act     // calling activity
+     * @param soFar   // input string so far
+     * @param jsonMap // map of strings following word
+     * @param word    // word which was long clicked
      */
     public EditLongClickListener(EditActivity act, String soFar, HashMap<String, JSONObject> jsonMap
             , String word) {
@@ -44,8 +44,8 @@ public class EditLongClickListener implements Button.OnLongClickListener {
      * Launches a dialog which can modify the tree upon user's request
      * Dialog is constructed in this method
      *
-     * @param view
-     * @return
+     * @param view view which was clicked
+     * @return success of click
      */
     @Override
     public boolean onLongClick(View view) {
@@ -59,8 +59,10 @@ public class EditLongClickListener implements Button.OnLongClickListener {
         Button editButton = (Button) dialog.findViewById(R.id.editButton);
         editButton.setOnClickListener(new Button.OnClickListener() {
             /**
+             * Called when edit button is clicked, will try and edit the phrase tree and
+             * regenerate the UI accordingly
              *
-             * @param view
+             * @param view view which was clicked
              */
             @Override
             public void onClick(View view) {
@@ -90,8 +92,10 @@ public class EditLongClickListener implements Button.OnLongClickListener {
         Button delButton = (Button) dialog.findViewById(R.id.delButton);
         delButton.setOnClickListener(new Button.OnClickListener() {
             /**
+             * Called when delete button is clicked, will try and delete the phrase tree and
+             * regenerate the UI accordingly
              *
-             * @param view
+             * @param view view which was clicked
              */
             @Override
             public void onClick(View view) {
@@ -119,8 +123,10 @@ public class EditLongClickListener implements Button.OnLongClickListener {
         Button addChild = (Button) dialog.findViewById(R.id.addChild);
         addChild.setOnClickListener(new Button.OnClickListener() {
             /**
+             * Called when add button is clicked, will try and add the phrase, after which it will
+             * regenerate the UI accordingly
              *
-             * @param view
+             * @param view view which was clicked
              */
             @Override
             public void onClick(View view) {
