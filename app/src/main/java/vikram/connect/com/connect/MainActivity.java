@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
      * @param savedInstanceState data which is saved inside drawer context
      */
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }

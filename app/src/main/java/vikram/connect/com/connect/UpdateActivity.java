@@ -37,7 +37,7 @@ public class UpdateActivity extends AppCompatActivity {
      * @param savedInstanceState data saved so far in application
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
         oldRv = (RecyclerView) findViewById(R.id.old);

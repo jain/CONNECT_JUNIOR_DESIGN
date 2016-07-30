@@ -6,7 +6,7 @@ PLEASE NOTE CODE DOCUMENTATION IMPORTANT NOTICE:
 	
 	If you want the documentation for each class please navigate to /Code Documentation (JavaDoc)/vikram/connect/com/connect
 
-	Else please open index.html to see code structure 
+	Else please open index.html to see code structure and activity summaries
 
 
 All of the code resides in the app/src/main folder.

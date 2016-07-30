@@ -25,8 +25,8 @@ The code is formatted according to proper Android Conventions (ctrl + alt + l in
 
 To run this code:
 
-1) Pull code to local machine
+	1) Pull code to local machine
 
-2) Run gradle build on app/build.gradle
+	2) Run gradle build on app/build.gradle
 
-3) Use Android SDK to compile and run code on either an emulator or real Android device connected to the computer
+	3) Use Android SDK to compile and run code on either an emulator or real Android device connected to the computer
