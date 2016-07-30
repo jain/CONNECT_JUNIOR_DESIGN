@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         // set listener to edit text
         command.addTextChangedListener(new TextWatcher() {
             /**
+             * called just before text written into edittext
              *
              * @param charSequence entered text
              * @param i
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
 
             /**
+             * called as text is being changed
              *
              * @param charSequence
              * @param i
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
 
             /**
+             * called after text in edittext is modified
              *
              * @param editable
              */
@@ -124,8 +127,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 remake();
             }
         });
+        // get elements from layout file
         input = (TextView) findViewById(R.id.input);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
+        // setup the navigation drawer with the 3 bars
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_main);
         navigationView.setNavigationItemSelectedListener(this);
         mActivityTitle = getTitle().toString();
