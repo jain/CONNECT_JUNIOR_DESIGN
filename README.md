@@ -1,9 +1,17 @@
 # CONNECT README
 
+PLEASE NOTE CODE DOCUMENTATION IMPORTANT NOTICE:
+
+	All of the code docummentation is in Code Documentation (JavaDoc)
+	
+	If you want the documentation for each class please navigate to /Code Documentation (JavaDoc)/vikram/connect/com/connect
+
+	Else please open index.html to see code structure 
+
+
 All of the code resides in the app/src/main folder.
 
 AndroidManifest.xml was modified to suit the permissions the app will require
-
 
 All the java files reside in app/src/main/java/vikram/connect/com/connect
 
@@ -17,8 +25,8 @@ The code is formatted according to proper Android Conventions (ctrl + alt + l in
 
 To run this code:
 
-1) Pull code to local machine
+	1) Pull code to local machine
 
-2) Run gradle build on app/build.gradle
+	2) Run gradle build on app/build.gradle
 
-3) Use Android SDK to compile and run code on either an emulator or real Android device connected to the computer
+	3) Use Android SDK to compile and run code on either an emulator or real Android device connected to the computer
