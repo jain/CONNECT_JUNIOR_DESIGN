@@ -27,7 +27,7 @@ import java.util.Iterator;
  * Similar to MainActivity but focuses more on customization
  */
 public class EditActivity extends AppCompatActivity {
-    private HashMap<String, HashSet<String>> wordMap;
+    private HashMap<String, HashSet<String>> wordMap; // reference to phrase mappings to generate phrase tree
     private HashMap<String, JSONObject> jsonMap;
     private LinearLayout layout1;
     private EditText command;
