@@ -42,7 +42,7 @@ import java.util.Locale;
  * Activity which is the main screen of the app
  * User can construct phrase trees and input text
  * This will be said out loud by push of a button
- * User can request speech to be interpretted in this Activity too via speech to texh
+ * User can request speech to be interpreted in this Activity too via speech to text
  */
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, NavigationView.OnNavigationItemSelectedListener {
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
