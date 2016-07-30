@@ -1,7 +1,6 @@
 package vikram.connect.com.connect;
 
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,25 +14,25 @@ import java.util.ArrayList;
 
 /**
  * Class is the custom adapter for recycler view present on the very first screen (selection screen)
- * Will inflate cardviews inside recycler view to match passed in data
+ * Will inflate CardViews inside recycler view to match passed in data
  * CardView design is specified in select_cv.xml
  */
 public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelViewHolder> {
-    private ArrayList<String[]> data;
-    private final View.OnClickListener mOnClickListener;
+    private ArrayList<String[]> data; // data to populate Recycler View
+    private final View.OnClickListener mOnClickListener; // reference to listener for Recycler View
 
     /**
-     * internal static class which inflates the cardview specific to this recycler view
+     * Internal static class which inflates the CardView specific to this recycler view
      * finds elements and inflates them when passed in input.
      */
     public static class SelViewHolder extends RecyclerView.ViewHolder {
-        private TextView name;
-        private ImageView photo;
+        private TextView name; // reference to text holder in current view
+        private ImageView photo; // reference to image holder in current view
 
         /**
-         * constructor for cardview, finds the necessary elements to inflate
+         * Constructor for CardView, finds the necessary elements to inflate
          *
-         * @param view
+         * @param view the parent view which will hold the CardView
          */
         public SelViewHolder(View view) {
             super(view);
@@ -43,7 +42,7 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelViewHol
     }
 
     /**
-     * constructor to pass ind data which will be utilized for filling recyclerview
+     * Constructor to pass in data which will be utilized for filling RecyclerView
      */
     public SelectAdapter(ArrayList<String[]> myDataset, AppCompatActivity act, RecyclerView rView) {
         data = myDataset;
@@ -51,12 +50,12 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelViewHol
     }
 
     /**
-     * Finds and inflates the relevant cardview for this recycler view
-     * Assigns listener so each cardview is selectable
+     * Finds and inflates the relevant CardView for this RecyclerView
+     * Assigns listener so each CardView is selectable
      *
      * @param viewGroup view under which the inflation occurs
      * @param i         index
-     * @return          variable representing cardview for this index
+     * @return variable representing CardView for this index
      */
     @Override
     public SelViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -67,10 +66,10 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelViewHol
     }
 
     /**
-     * Configures parameters inside the cardview to take in values
-     * The values are assigned to various elements in cardview creating the UI we see
+     * Configures parameters inside the CardView to take in values
+     * The values are assigned to various elements in CardView creating the UI we see
      *
-     * @param svh the variable which represents the cardview
+     * @param svh the variable which represents the CardView
      * @param i   current index of data
      */
     @Override
@@ -81,7 +80,7 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelViewHol
     }
 
     /**
-     * @return numsber of items in recycler view
+     * @return number of items in recycler view
      */
     @Override
     public int getItemCount() {

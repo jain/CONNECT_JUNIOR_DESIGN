@@ -30,15 +30,15 @@ import java.util.Iterator;
 
 /**
  * Activity is first screen user sees on opening the app
- * Activity is basically a recycler view with button on bottom
- * Recycler View is inflated with data user has stored on his/her phone
+ * Activity is basically a RecyclerView with button on bottom
+ * RecyclerView is inflated with data user has stored on his/her phone
  */
 public class SelectActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    public static final String TAG = "MyTag";
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private String mActivityTitle;
-    private RecyclerView modules;
+    public static final String TAG = "MyTag"; // tag for volley network requests
+    private DrawerLayout mDrawerLayout; // reference to navigation view layout
+    private ActionBarDrawerToggle mDrawerToggle; // reference to action bar to design it
+    private String mActivityTitle; // reference to title of current activity
+    private RecyclerView modules; // reference to RecyclerView present in activity
 
     /**
      * Method to generate the view when initially loaded

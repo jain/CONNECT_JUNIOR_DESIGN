@@ -21,14 +21,14 @@ import java.util.Iterator;
 
 /**
  * Activity class for when user is wanting to update modules
- * Will inflate cardviews in a recyclerview for modules the user currently has
+ * Will inflate CardViews in a RecyclerView for modules the user currently has
  * The user can then pick to delete or update those modules to the data stored on Firebase
  */
 public class UpdateActivity extends AppCompatActivity {
-    private RecyclerView oldRv;
-    private RequestQueue queue;
-    private HashSet<String> moduleNames;
-    public static final String TAG = "MyTag";
+    private RecyclerView oldRv; // RecyclerView for this activity
+    private RequestQueue queue; // queue of network requests
+    private HashSet<String> moduleNames; // stores data to populate RecyclerView
+    public static final String TAG = "MyTag"; // necessary to perform network requests
 
     /**
      * creates the view
@@ -44,8 +44,8 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     /**
-     * called when user switches to this activity once it has been created
-     * sets up the cardview based on data present and data available online
+     * Called when user switches to this activity once it has been created
+     * Sets up the RecyclerView based on data present and data available online
      */
     @Override
     public void onResume() {
@@ -61,8 +61,8 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     /**
-     * called when user switches to different screen
-     * must end network requests at this time
+     * Called when user switches to different screen
+     * Must remove all pending network requests from this screen
      */
     public void onPause() {
         super.onPause();
@@ -72,8 +72,8 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     /**
-     * provides data for the recycler view adapter which is formatted properly
-     * recyclerview is assigned adapter and inflates internal cardviews
+     * Provides data for the recycler view adapter which is formatted properly
+     * RecyclerView is assigned adapter and inflates internal CardViews
      *
      * @throws JSONException
      */
@@ -93,7 +93,7 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     /**
-     * query data from Firebase to see what updates the modules can gets
+     * Query data from Firebase to see what updates the modules can gets
      */
     public void initializeNew() {
         // code for query
@@ -102,9 +102,9 @@ public class UpdateActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new VolleyRequest(null, moduleNames, this), new Response.ErrorListener() {
             /**
-             * ensure the request was successful else through an error to let the user know
+             * Ensure the request was successful else through an error to let the user know
              *
-             * @param error
+             * @param error if something wrong with network response
              */
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -114,5 +114,4 @@ public class UpdateActivity extends AppCompatActivity {
         // add query to network queue
         queue.add(stringRequest);
     }
-
 }

@@ -11,17 +11,17 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 /**
- * Responds to a cardview being clicked on the SelectActivity page
+ * Responds to a CardView being clicked on the SelectActivity page
  * This class ensures that the following activity which is opened has the necessary data
  * to proceed.
  */
 public class SelectClickListener implements View.OnClickListener {
-    private RecyclerView mRecyclerView;
-    private ArrayList<String[]> data;
-    private AppCompatActivity act;
+    private RecyclerView mRecyclerView;  // RecyclerView variable for activity
+    private ArrayList<String[]> data; // data which is being used to populate RecyclerView
+    private AppCompatActivity act; // reference to activity which called listener
 
     /**
-     * constructor to create listener
+     * Constructor to create listener
      *
      * @param mRecyclerView recycler view in which the click occurs
      * @param data          data present in the recycler view
@@ -49,7 +49,7 @@ public class SelectClickListener implements View.OnClickListener {
             Intent intent = new Intent(act, MainActivity.class);
             act.startActivity(intent);
         } catch (JSONException e) {
-            // incase of mishap notify user
+            // in case of mishap notify user
             Toast.makeText(act, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }

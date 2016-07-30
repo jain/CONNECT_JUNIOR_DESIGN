@@ -18,15 +18,15 @@ import java.util.Iterator;
  * Class will also be responsible for assigning the recycler view new data to populate the UI
  */
 public class VolleyRequest implements Response.Listener<String> {
-    private ArrayList<String[]> modules;
-    private RecyclerView newRv;
-    private HashSet<String> moduleNames;
-    private AppCompatActivity act;
+    private ArrayList<String[]> modules; // data which is being used to populate RecyclerView
+    private RecyclerView newRv; // RecyclerView variable for activity
+    private HashSet<String> moduleNames; // set for data to speed up lookup of existence
+    private AppCompatActivity act; // reference to activity which called listener
 
     /**
      * constructor which takes in params to be used later on
      *
-     * @param newRv       recyclerview to be filled
+     * @param newRv       RecyclerView to be filled
      * @param moduleNames data which may be used to fill recycler view
      * @param act         var representing activity to make UI calls to
      */
@@ -60,7 +60,7 @@ public class VolleyRequest implements Response.Listener<String> {
                     modules.add(data);
                 }
             }
-            // assign data to recyclerview to generate UI
+            // assign data to RecyclerView to generate UI
             if (newRv != null) {
                 DownloadAdapter adapter = new DownloadAdapter(modules, act);
                 newRv.setAdapter(adapter);
