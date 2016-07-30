@@ -7,13 +7,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * Created by vikram on 4/21/16.
+ * Activity which shows definitions of hard words that deaf people may not be familiar with
  */
 
 public class DefinitionActivity extends AppCompatActivity {
     private WebView mwv;
 
     /**
+     * Creates and loads the container for the webpage with the definition
+     *
      * @param savedInstanceState
      */
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class DefinitionActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * When screen is changed back
      */
     @Override
     protected void onResume() {

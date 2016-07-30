@@ -24,9 +24,9 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
     private ArrayList<String[]> data;
     private AppCompatActivity act;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    /**
+     * Class which represents the cardview design for this Recycler View
+     */
     public static class OldViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         CardView cv;
@@ -34,21 +34,35 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
         ImageView photo;
         Button update;
         Button deleteB;
+
         public OldViewHolder(View v) {
             super(v);
-            cv = (CardView)itemView.findViewById(R.id.cv_old);
-            name = (TextView)itemView.findViewById(R.id.old_name);
+            cv = (CardView) itemView.findViewById(R.id.cv_old);
+            name = (TextView) itemView.findViewById(R.id.old_name);
             update = (Button) itemView.findViewById(R.id.old_update);
             deleteB = (Button) itemView.findViewById(R.id.old_delete);
-            photo = (ImageView)itemView.findViewById(R.id.old_photo);
+            photo = (ImageView) itemView.findViewById(R.id.old_photo);
         }
     }
-    // Provide a suitable constructor (depends on the kind of dataset)
+
+    /**
+     * Constructor which grabs data to be used by this adapter to inflate CardViews
+     *
+     * @param myDataset
+     * @param act
+     */
     public DownloadedAdapter(ArrayList<String[]> myDataset, AppCompatActivity act) {
         data = myDataset;
         this.act = act;
     }
 
+    /**
+     * Creates CardView for specified index
+     *
+     * @param viewGroup
+     * @param i
+     * @return
+     */
     @Override
     public OldViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.old_cv, viewGroup, false);
@@ -56,6 +70,12 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
         return ovh;
     }
 
+    /**
+     * Binds a CardView with particular index in RecyclerView
+     *
+     * @param ovh
+     * @param i
+     */
     @Override
     public void onBindViewHolder(OldViewHolder ovh, int i) {
         ovh.name.setText(data.get(i)[0]);
@@ -99,6 +119,11 @@ public class DownloadedAdapter extends RecyclerView.Adapter<DownloadedAdapter.Ol
         });
     }
 
+    /**
+     * returns size of RecyclerView
+     *
+     * @return
+     */
     @Override
     public int getItemCount() {
         return data.size();

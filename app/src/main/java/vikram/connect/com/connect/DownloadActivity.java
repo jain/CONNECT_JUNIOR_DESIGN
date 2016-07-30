@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * Activity where user can download more modules
+ */
 public class DownloadActivity extends AppCompatActivity {
     private RecyclerView oldRv;
     private RecyclerView newRv;
@@ -27,17 +30,26 @@ public class DownloadActivity extends AppCompatActivity {
     private HashSet<String> moduleNames;
 
     public static final String TAG = "MyTag";
+
+    /**
+     * Loads and creates the layout for current view
+     * Instantiates elements from layout
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        //oldRv = (RecyclerView) findViewById(R.id.old);
         newRv = (RecyclerView) findViewById(R.id.newOnes);
     }
+
+    /**
+     * Recreates the RecyclerView for the page when screen is changed to this Activity
+     */
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        //oldRv.setLayoutManager(new LinearLayoutManager(this));
         newRv.setLayoutManager(new LinearLayoutManager(this));
         moduleNames = new HashSet<String>();
         try {
@@ -48,7 +60,10 @@ public class DownloadActivity extends AppCompatActivity {
         initializeNew();
     }
 
-    private void initializeNew() {
+    /**
+     * Gets data for Recycler View
+     */
+    public void initializeNew() {
         queue = Volley.newRequestQueue(this);
         String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
 
@@ -61,23 +76,31 @@ public class DownloadActivity extends AppCompatActivity {
         });
         queue.add(stringRequest);
     }
+
+    /**
+     * Cancels network request when screen is changed
+     */
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         if (queue != null) {
             queue.cancelAll(TAG);
         }
     }
+
+    /**
+     * Gets list of already downloaded modules
+     *
+     * @throws JSONException
+     */
     private void initializeOld() throws JSONException {
         Iterator<String> it = Data.modules.keys();
         ArrayList<String[]> modules = new ArrayList<String[]>();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             String name = it.next();
             moduleNames.add(name);
             String[] data = new String[]{name, Data.modules.getJSONObject(name).getString("icon")};
             modules.add(data);
         }
-        //DownloadedAdapter adapter = new DownloadedAdapter(modules, this);
-        //oldRv.setAdapter(adapter);
     }
 }

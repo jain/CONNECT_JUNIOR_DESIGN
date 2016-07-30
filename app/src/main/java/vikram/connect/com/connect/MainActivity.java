@@ -140,12 +140,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     *
+     * code creates the navigation drawer in the right spot for the application
      */
-    private void setupDrawer() {
+    public void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
             /**
-             * Called when a drawer has settled in a completely open state. *
+             * Called when a drawer has settled in a completely open state.
              * @param drawerView
              */
             public void onDrawerOpened(View drawerView) {
@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+        // enable toggling of drawer
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     /**
      * method for creating the phrase tree on the screen
      */
-    private void remake() {
+    public void remake() {
         // invalidate the view
         layout1.removeAllViews();
         layout1.invalidate();
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
                 layout2.addView(layout3);
             }
+            // add view and validate the layout
             layout1.addView(layout2);
             layout1.postInvalidate();
         }
@@ -269,19 +271,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     * generate the map for the phrase tree based on the json data loaded in the app
+     * Generate the map for the phrase tree based on the json data loaded in the app
      *
      * @param soFar
      * @param next
      * @throws JSONException
      */
-    private void fillMapRecursion(String soFar, JSONObject next) throws JSONException {
+    public void fillMapRecursion(String soFar, JSONObject next) throws JSONException {
         // recurse through the keys in the JSON object from loaded data
         Iterator<String> it = next.keys();
         while (it.hasNext()) {
             if (!wordMap.containsKey(soFar)) {
                 wordMap.put(soFar, new HashSet<String>());
             }
+            // recursively populate map with the keys such that combinations earlier are valid
             String word = it.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
             if (next.get(word) instanceof JSONObject) {
@@ -291,11 +294,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
+     * Create a map of phrases to use to populate the phrase tree
+     *
      * @throws JSONException
      */
-    private void fillMap() throws JSONException {
+    public void fillMap() throws JSONException {
+        // get the possible phrases
         JSONObject phrases = Data.module.getJSONObject("phrases");
         Iterator<String> iter = phrases.keys();
+        // fill map with the phrases so far
         while (iter.hasNext()) {
             String soFar = "";
             if (!wordMap.containsKey(soFar)) {
@@ -303,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
             String word = iter.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
+            // recursively fill the remaining phrases
             if (phrases.get(word) instanceof JSONObject) {
                 fillMapRecursion(word.trim().toLowerCase(), phrases.getJSONObject(word));
             }
@@ -310,6 +318,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
+     * Method takes words in a textview and attaches listeners to them, such that when they are
+     * clicked they do actions specified by their listeners
+     *
      * @param view
      * @param clickableText
      * @param listener
@@ -337,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     *
+     * method which creates the intent for voice recognition and begins it
      */
     public void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -349,24 +360,40 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
+     * Method is called when the tts will say what the deaf person wants it to say
+     *
      * @param view
      * @throws InterruptedException
      */
     public void voiceRec(View view) throws InterruptedException {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
+        // let hearing person know voice to text is about to begin via tts
         tts.speak("Please speak into the phone after the beep.", TextToSpeech.QUEUE_ADD, map);
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            /**
+             *
+             * @param utteranceId
+             */
             @Override
             public void onStart(String utteranceId) {
 
             }
 
+            /**
+             * When tts is done launch the voice recognition
+             *
+             * @param utteranceId
+             */
             @Override
             public void onDone(String utteranceId) {
                 startVoiceRecognitionActivity();
             }
 
+            /**
+             *
+             * @param utteranceId
+             */
             @Override
             public void onError(String utteranceId) {
             }
@@ -376,12 +403,18 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
+     * Called when the voice to speech is done
+     * Tries to recognize the spoken text
+     * Will Try to parse spoken text such that hard words are linked so that deaf people can look
+     * up their definitions.
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // try to get the text from the voice
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE
                 && resultCode == RESULT_OK) {
             ArrayList<String> matches = data
@@ -389,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             String origString = matches.get(0);
             input.setText(origString);
             String[] splitWords = origString.split(" ");
+            // for each of the words link it to its definition url
             for (String word : splitWords) {
                 final String wrd = word;
                 clickify(input, word, new ClickSpan.OnClickListener() {
@@ -407,14 +441,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
+     * Called when user wants his text to be spoken out loud
+     * Will use tts to 'speak' the words
+     *
      * @param view
      */
     public void speak(View view) {
+        // set up tts with the input
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
         tts.speak(command.getText().toString(), TextToSpeech.QUEUE_FLUSH, map);
         int len = command.getText().toString().length();
         final MainActivity ma = this;
+        // setup listener such that will notify deaf person when the phone is speaking
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             /**
              *
@@ -462,6 +501,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
+     * Initialize tts to American English
+     *
      * @param status
      */
     @Override
@@ -470,7 +511,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     *
+     * Called when user presses back button
+     * Will close the navigation drawer if open, else will go back to last activity
      */
     @Override
     public void onBackPressed() {

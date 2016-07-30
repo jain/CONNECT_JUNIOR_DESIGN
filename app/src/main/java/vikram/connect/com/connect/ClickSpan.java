@@ -5,7 +5,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 /**
- * Created by vikram on 4/21/16.
+ * Class which makes the text in Textview clickable and attaches a listener
  */
 public class ClickSpan extends ClickableSpan {
 

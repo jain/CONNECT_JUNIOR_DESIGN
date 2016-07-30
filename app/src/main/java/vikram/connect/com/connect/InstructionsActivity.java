@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by vikram on 7/24/16.
+ * Activity displays instructions for how to use app
+ * It is static so nothing much happens
  */
 public class InstructionsActivity extends AppCompatActivity {
     /**
+     * Loads the content from the xml file and displays it
      *
      * @param savedInstanceState
      */

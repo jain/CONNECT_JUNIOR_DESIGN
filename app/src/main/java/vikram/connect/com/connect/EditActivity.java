@@ -23,7 +23,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- *
+ * Activity which allows user to customize the phrase tree to suit his/her needs better
+ * Similar to MainActivity but focuses more on customization
  */
 public class EditActivity extends AppCompatActivity {
     private HashMap<String, HashSet<String>> wordMap;
@@ -35,7 +36,6 @@ public class EditActivity extends AppCompatActivity {
     private Dialog dialog;
 
     /**
-     *
      * @param savedInstanceState
      */
     @Override
@@ -82,27 +82,31 @@ public class EditActivity extends AppCompatActivity {
     }
 
     /**
+     * If user chooses to add a phrase this method is called
+     * Checks if the phrase is valid and/or exists already and then decides to add it
      *
      * @param view
      */
-    public void addPhrase (View view){
+    public void addPhrase(View view) {
+        // check validity
         String phr = phraseText.getText().toString().trim().toLowerCase();
-        if(phr.isEmpty()){
+        if (phr.isEmpty()) {
             Toast.makeText(this, "Please enter a valid phrase", Toast.LENGTH_LONG).show();
             dialog.cancel();
             return;
         }
         try {
+            // check duplication
             JSONObject phrases = Data.module.getJSONObject("phrases");
-            if(phrases.has(phr)){
+            if (phrases.has(phr)) {
                 Toast.makeText(this, "Entered Phrase Already Exists", Toast.LENGTH_LONG).show();
             } else {
+                // if successful regenerate view to take into account latest happenings
                 phrases.put(phr, ".asd");
                 Data.save(this);
                 onResume();
             }
-
-        } catch (JSONException e) {
+        } catch (JSONException e) { // catch errs and show toasts for them
             e.printStackTrace();
             Toast.makeText(this, "JSON Err", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
@@ -113,10 +117,12 @@ public class EditActivity extends AppCompatActivity {
     }
 
     /**
+     * Called from XML when user wants to add a new phrase
+     * Generates a new dialog allowing the user to do so
      *
      * @param view
      */
-    public void newPhrase(View view){
+    public void newPhrase(View view) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.phrase);
         dialog.setTitle("Addition");
@@ -128,10 +134,10 @@ public class EditActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Used for recreating the activity when screen changes or some data got modified
      */
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         stringSoFar = "";
         wordMap = new HashMap<String, HashSet<String>>();
@@ -145,18 +151,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @throws JSONException
-     */
-    protected void genMap() throws JSONException {
-        JSONObject linksJS = Data.module.getJSONObject("word links");
-        Iterator iter = linksJS.keys();
-        while (iter.hasNext()){
-            String wrd = iter.next().toString();
-        }
-    }
-
-    /**
+     *  Generate the map for the phrase tree based on the json data loaded in the app
      *
      * @param soFar
      * @param next
@@ -165,22 +160,29 @@ public class EditActivity extends AppCompatActivity {
     private void fillMapRecursion(String soFar, JSONObject next) throws JSONException {
         Iterator<String> iter = next.keys();
         while (iter.hasNext()) {
-            if (!wordMap.containsKey(soFar)){
+            if (!wordMap.containsKey(soFar)) {
                 wordMap.put(soFar, new HashSet<String>());
                 jsonMap.put(soFar, next);
             }
             String word = iter.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
-            if(next.get(word) instanceof JSONObject){
+            if (next.get(word) instanceof JSONObject) {
                 fillMapRecursion((soFar + " " + word.trim().toLowerCase()).trim().toLowerCase(), next.getJSONObject(word));
             }
         }
     }
-    public EditText getCommand(){
+
+    /**
+     * Get EditText
+     *
+     * @return
+     */
+    public EditText getCommand() {
         return command;
     }
 
     /**
+     *  Create a map of phrases to use to populate the phrase tree
      *
      * @throws JSONException
      */
@@ -189,31 +191,35 @@ public class EditActivity extends AppCompatActivity {
         Iterator<String> iter = phrases.keys();
         while (iter.hasNext()) {
             String soFar = "";
-            if (!wordMap.containsKey(soFar)){
+            if (!wordMap.containsKey(soFar)) {
                 wordMap.put(soFar, new HashSet<String>());
                 jsonMap.put(soFar, phrases);
             }
             String word = iter.next();
             wordMap.get(soFar).add(word.trim().toLowerCase());
-            if(phrases.get(word) instanceof JSONObject){
+            if (phrases.get(word) instanceof JSONObject) {
                 fillMapRecursion(word.trim().toLowerCase(), phrases.getJSONObject(word));
             }
         }
     }
 
     /**
+     * Method for creating the phrase tree on the screen
      *
      * @param soFar
      */
     private void remake(String soFar) {
+        // invalidate the view
         layout1.removeAllViews();
         layout1.invalidate();
         soFar = stringSoFar.toLowerCase().trim();
-        if (!wordMap.containsKey(soFar)){
+        // check if the string exists in the hashmap, if so we can generate the phrase tree from this point
+        if (!wordMap.containsKey(soFar)) {
             command.setSelection(command.getText().length());
             return;
         }
-        for (String word: wordMap.get(soFar)){
+        // generate the first linear layout and populate it
+        for (String word : wordMap.get(soFar)) {
             LinearLayout layout2 = new LinearLayout(this);
             layout2.setOrientation(LinearLayout.HORIZONTAL);
             layout2.setLayoutParams(new TableRow.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 10.0f));
@@ -221,11 +227,13 @@ public class EditActivity extends AppCompatActivity {
             Button first = new Button(this);
             first.setText(word);
             final String w2 = word;
+            // if a phrase is selected add it to the speech which will be said
             first.setOnClickListener(new Button.OnClickListener() {
                 public void onClick(View v) {
                     command.setText(command.getText().toString() + " " + w2);
                 }
             });
+            // generate the second layer of the phrase tree
             first.setOnLongClickListener(new EditLongClickListener(this, soFar, jsonMap, word));
             layout2.addView(first);
             layout2.addView(new TextView(this));
@@ -233,7 +241,7 @@ public class EditActivity extends AppCompatActivity {
                 LinearLayout layout3 = new LinearLayout(this);
                 layout3.setOrientation(LinearLayout.VERTICAL);
                 layout3.setGravity(Gravity.CENTER);
-
+                // add each phrase to second layer
                 for (String word2 : wordMap.get((soFar + " " + word).trim().toLowerCase())) {
                     TextView sec = new TextView(this);
                     sec.setTextSize(20);
@@ -243,6 +251,7 @@ public class EditActivity extends AppCompatActivity {
 
                 layout2.addView(layout3);
             }
+            // add view and validate the layout
             layout1.addView(layout2);
             layout1.postInvalidate();
         }

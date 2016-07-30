@@ -18,34 +18,48 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by vikram on 5/29/16.
+ * Adapter for RecyclerView which is in charge of showing possible downloadable modules
  */
 public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.NewViewHolder> {
     private ArrayList<String[]> data;
     private AppCompatActivity act;
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
+    /**
+     * Class which represents the cardview design for this Recycler View
+     */
     public static class NewViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         CardView cv;
         TextView name;
         ImageView photo;
         Button download;
+
         public NewViewHolder(View v) {
             super(v);
-            cv = (CardView)itemView.findViewById(R.id.cv_new);
-            name = (TextView)itemView.findViewById(R.id.new_name);
+            cv = (CardView) itemView.findViewById(R.id.cv_new);
+            name = (TextView) itemView.findViewById(R.id.new_name);
             download = (Button) itemView.findViewById(R.id.new_download);
-            photo = (ImageView)itemView.findViewById(R.id.new_photo);
+            photo = (ImageView) itemView.findViewById(R.id.new_photo);
         }
     }
-    // Provide a suitable constructor (depends on the kind of dataset)
+
+    /**
+     * Constructor which grabs data to be used by this adapter to inflate CardViews
+     *
+     * @param myDataset
+     * @param act
+     */
     public DownloadAdapter(ArrayList<String[]> myDataset, AppCompatActivity act) {
         data = myDataset;
         this.act = act;
     }
 
+    /**
+     * Creates CardView for specified index
+     *
+     * @param viewGroup
+     * @param i
+     * @return
+     */
     @Override
     public NewViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.new_cv, viewGroup, false);
@@ -53,6 +67,12 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.NewVie
         return nvh;
     }
 
+    /**
+     * Binds a CardView with particular index in RecyclerView
+     *
+     * @param nvh
+     * @param i
+     */
     @Override
     public void onBindViewHolder(NewViewHolder nvh, int i) {
         nvh.name.setText(data.get(i)[0]);
@@ -63,7 +83,7 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.NewVie
             @Override
             public void onClick(View view) {
                 try {
-                    Data.modules.put(data.get(index)[0],Data.firebaseJS.get(data.get(index)[0]));
+                    Data.modules.put(data.get(index)[0], Data.firebaseJS.get(data.get(index)[0]));
                     Data.save(act);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -75,6 +95,11 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.NewVie
         });
     }
 
+    /**
+     * returns size of RecyclerView
+     *
+     * @return
+     */
     @Override
     public int getItemCount() {
         return data.size();

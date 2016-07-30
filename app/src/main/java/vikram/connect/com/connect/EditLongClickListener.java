@@ -13,41 +13,70 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Created by vikram on 5/30/16.
+ * Listener class which is attached to button on phrase tree in Edit mode when it is held for a
+ * long time.
+ * Allows user to use this to edit components of the phrase tree
  */
 public class EditLongClickListener implements Button.OnLongClickListener {
     private String soFar;
     private HashMap<String, JSONObject> jsonMap;
     private EditActivity act;
     private String word;
+
+    /**
+     * Constructor which takes in params which will be necessary in case of edits made
+     *
+     * @param act
+     * @param soFar
+     * @param jsonMap
+     * @param word
+     */
     public EditLongClickListener(EditActivity act, String soFar, HashMap<String, JSONObject> jsonMap
-    , String word){
+            , String word) {
         this.act = act;
         this.soFar = soFar;
         this.jsonMap = jsonMap;
         this.word = word;
     }
+
+    /**
+     * Called when the button on phrase tree in edit mode is held for a long time
+     * Launches a dialog which can modify the tree upon user's request
+     * Dialog is constructed in this method
+     *
+     * @param view
+     * @return
+     */
     @Override
     public boolean onLongClick(View view) {
+        // inflate dialog from view and pull elements
         final Dialog dialog = new Dialog(act);
         dialog.setContentView(R.layout.edit_phrase_dialog);
         dialog.setTitle("Edit Phrase");
         final EditText phrTxt = (EditText) dialog.findViewById(R.id.edit);
         phrTxt.setText(word);
+        // set a button to edit the current phrase held down
         Button editButton = (Button) dialog.findViewById(R.id.editButton);
         editButton.setOnClickListener(new Button.OnClickListener() {
+            /**
+             *
+             * @param view
+             */
             @Override
             public void onClick(View view) {
+                // checks if edit is valid
                 if (!phrTxt.getText().toString().trim().equals(word)) {
                     try {
+                        // tries to write the edit to the local storage system
                         Data.module.put("edited", "1");
                         JSONObject parent = jsonMap.get(soFar);
                         parent.put(phrTxt.getText().toString().trim(), parent.get(word));
                         parent.remove(word);
                         Data.save(act);
+                        // reconstruct the layout on the screen based on edit
                         act.onResume();
                         act.getCommand().setText(soFar);
-                    } catch (JSONException e) {
+                    } catch (JSONException e) { // show errs as toast messages
                         Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -57,18 +86,25 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                 dialog.cancel();
             }
         });
+        // set a button to delete the current phrase held down
         Button delButton = (Button) dialog.findViewById(R.id.delButton);
         delButton.setOnClickListener(new Button.OnClickListener() {
+            /**
+             *
+             * @param view
+             */
             @Override
             public void onClick(View view) {
+                // check if the deletion is possible and if so do it
                 try {
                     Data.module.put("edited", "1");
                     JSONObject parent = jsonMap.get(soFar);
                     parent.remove(word);
                     Data.save(act);
+                    // once deletion occurs from local storage regenerate the view on the screen
                     act.onResume();
                     act.getCommand().setText(soFar);
-                } catch (JSONException e) {
+                } catch (JSONException e) { // show errs as toast messages
                     Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -77,17 +113,27 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                 dialog.cancel();
             }
         });
+        // this part deals with adding children to the current phrase
+        // so we need an edit text and a button
         final EditText child = (EditText) dialog.findViewById(R.id.child);
         Button addChild = (Button) dialog.findViewById(R.id.addChild);
         addChild.setOnClickListener(new Button.OnClickListener() {
+            /**
+             *
+             * @param view
+             */
             @Override
             public void onClick(View view) {
+                // check if child is valid for current phrase
                 String childText = child.getText().toString().trim().toLowerCase();
                 try {
+                    // try to edit local storage
                     Data.module.put("edited", "1");
                     JSONObject parent = jsonMap.get(soFar);
-                    if (parent.get(word) instanceof JSONObject){
-                        if (parent.getJSONObject(word).has(childText)){
+                    // check if parent is JSONObject otherwise we create one for itself to stand alone
+                    if (parent.get(word) instanceof JSONObject) {
+                        //  check for duplication
+                        if (parent.getJSONObject(word).has(childText)) {
                             Toast.makeText(act, "Already Has Specified Child", Toast.LENGTH_LONG).show();
                         } else {
                             parent.getJSONObject(word).put(childText, ".asd");
@@ -99,17 +145,19 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                         parent.put(word, childJS);
                         Data.save(act);
                     }
-                } catch (JSONException e) {
+                } catch (JSONException e) { // show errs as toast messages
                     Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
                 }
+                // regen view to take into account what has changed on screen
                 act.onResume();
                 act.getCommand().setText(soFar);
                 dialog.cancel();
             }
         });
+        // launch the dialog once its settings have been set
         dialog.show();
         return true;
     }
