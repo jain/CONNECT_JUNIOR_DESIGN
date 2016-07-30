@@ -1,7 +1,6 @@
 package vikram.connect.com.connect;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -17,16 +16,16 @@ import java.io.IOException;
  * being open
  */
 public class Data {
-    public static JSONObject modules = null;
-    public static JSONObject module = null;
-    public static JSONObject firebaseJS = null;
-    public static String video = "";
-    public static String videoWord = "";
+    public static JSONObject modules = null; // stores data of modules present
+    public static JSONObject module = null; // stores the current module being used in application
+    public static JSONObject firebaseJS = null; // stores data from firebase
+    public static String video = ""; // stores data of video url
+    public static String videoWord = ""; // stores data of word for which definition is needed
 
     /**
-     * writes data to local files in .json format
+     * Writes data to local files in .json format
      *
-     * @param context
+     * @param context context from which method called
      * @throws JSONException
      * @throws IOException
      */
@@ -35,24 +34,20 @@ public class Data {
         File file = new File(path, "CONNECT.json");
         Files.write(Data.modules.toString(2), file, Charsets.UTF_8);
         String result = Files.toString(file, Charsets.UTF_8);
-        Log.d("what", "what");
-        Log.d("path", path.toString());
     }
 
     /**
      * reads data from local .json files and parses it and puts it in variables to be used
      * by this application
      *
-     * @param context
-     * @return
+     * @param context context from which method called
+     * @return retrieves loaded data from disk
      * @throws IOException
      */
     public static String read(Context context) throws IOException {
         File path = context.getFilesDir();
         File file = new File(path, "CONNECT.json");
         String result = Files.toString(file, Charsets.UTF_8);
-        Log.d("what", "what");
-        Log.d("path", path.toString());
         return result;
     }
 }

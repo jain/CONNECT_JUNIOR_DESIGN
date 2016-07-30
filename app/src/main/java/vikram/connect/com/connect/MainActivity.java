@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         layout1.removeAllViews();
         layout1.invalidate();
         String soFar = typedString.toLowerCase().trim();
-        // check if the string exists in the hashmap, if so we can generate the phrase tree from this point
+        // check if the string exists in the HasMmap, if so we can generate the phrase tree from this point
         if (!wordMap.containsKey(soFar)) {
             command.setSelection(command.getText().length());
             return;
@@ -251,8 +251,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             first.setOnClickListener(new Button.OnClickListener() {
                 /**
                  * method which is called when the button is clicked, it will append phrase to the edittext
-                 * @param view
+                 * @param view view which was clicked
                  */
+                @Override
                 public void onClick(View view) {
                     command.setText(command.getText().toString() + " " + w2);
                 }

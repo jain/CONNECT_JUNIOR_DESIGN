@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 /**
- * Class is the custom adapter for recycler view present on the very first screen (selection screen)
+ * Class is the custom adapter for RecyclerView present on the very first screen (selection screen)
  * Will inflate CardViews inside recycler view to match passed in data
  * CardView design is specified in select_cv.xml
  */
@@ -43,6 +43,10 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelViewHol
 
     /**
      * Constructor to pass in data which will be utilized for filling RecyclerView
+     *
+     * @param myDataset the data set
+     * @param act       reference to calling activity
+     * @param rView     reference to RecyclerView to populate
      */
     public SelectAdapter(ArrayList<String[]> myDataset, AppCompatActivity act, RecyclerView rView) {
         data = myDataset;

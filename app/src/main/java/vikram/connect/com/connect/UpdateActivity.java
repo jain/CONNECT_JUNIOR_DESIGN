@@ -31,8 +31,8 @@ public class UpdateActivity extends AppCompatActivity {
     public static final String TAG = "MyTag"; // necessary to perform network requests
 
     /**
-     * creates the view
-     * finds necessary elements from layout file
+     * Creates the view
+     * Finds necessary elements from layout file
      *
      * @param savedInstanceState data saved so far in application
      */

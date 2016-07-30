@@ -20,22 +20,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * Activity where user can download more modules
+ * Activity class for when user is wanting to download new modules
+ * Will inflate CardViews in a RecyclerView for modules the user currently has
+ * The user can then pick modules not present on his/her device to be downloaded from Firebase
  */
 public class DownloadActivity extends AppCompatActivity {
-    private RecyclerView oldRv;
-    private RecyclerView newRv;
-
-    private RequestQueue queue;
-    private HashSet<String> moduleNames;
-
-    public static final String TAG = "MyTag";
+    private RecyclerView newRv; // RecyclerView for this activity
+    private RequestQueue queue; // queue of network requests
+    private HashSet<String> moduleNames; // stores data to populate RecyclerView
+    public static final String TAG = "MyTag"; // necessary to perform network requests
 
     /**
      * Loads and creates the layout for current view
      * Instantiates elements from layout
      *
-     * @param savedInstanceState
+     * @param savedInstanceState data stored in application so far
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,8 @@ public class DownloadActivity extends AppCompatActivity {
     }
 
     /**
-     * Recreates the RecyclerView for the page when screen is changed to this Activity
+     * Called when user switches to this activity once it has been created
+     * Sets up the RecyclerView based on data present and data available online
      */
     @Override
     public void onResume() {
@@ -61,9 +61,11 @@ public class DownloadActivity extends AppCompatActivity {
     }
 
     /**
-     * Gets data for Recycler View
+     * Query data from Firebase to see what modules user can get
+     * Updates RecyclerView based on the information obtained
      */
     public void initializeNew() {
+        // code for query
         queue = Volley.newRequestQueue(this);
         String url = "https://connectjuniordesign.firebaseio.com//.json?print=pretty";
 
@@ -74,11 +76,13 @@ public class DownloadActivity extends AppCompatActivity {
                 Toast.makeText(DownloadActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        // add query to network queue
         queue.add(stringRequest);
     }
 
     /**
-     * Cancels network request when screen is changed
+     * Called when user switches to different screen
+     * Must remove all pending network requests from this screen
      */
     @Override
     public void onPause() {
@@ -94,6 +98,7 @@ public class DownloadActivity extends AppCompatActivity {
      * @throws JSONException
      */
     private void initializeOld() throws JSONException {
+        // get data from local storage and append it to global variable
         Iterator<String> it = Data.modules.keys();
         ArrayList<String[]> modules = new ArrayList<String[]>();
         while (it.hasNext()) {

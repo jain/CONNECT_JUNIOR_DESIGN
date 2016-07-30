@@ -11,17 +11,18 @@ import android.webkit.WebViewClient;
  */
 
 public class DefinitionActivity extends AppCompatActivity {
-    private WebView mwv;
+    private WebView mwv; // container for website
 
     /**
-     * Creates and loads the container for the webpage with the definition
+     * Creates and loads the container for the website with the definition
      *
-     * @param savedInstanceState
+     * @param savedInstanceState savedInstanceState data stored in application
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_definition);
         mwv = (WebView) findViewById(R.id.web);
+        // specify settings for loading url
         mwv.getSettings().setJavaScriptEnabled(true);
         mwv.getSettings().setPluginState(WebSettings.PluginState.ON);
         mwv.setWebViewClient(new WebViewClient() {
@@ -34,7 +35,8 @@ public class DefinitionActivity extends AppCompatActivity {
     }
 
     /**
-     * When screen is changed back
+     * When screen is changed back this is called
+     * So load the relevant data and change the title of the screen
      */
     @Override
     protected void onResume() {
