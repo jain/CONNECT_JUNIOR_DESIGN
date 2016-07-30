@@ -4,11 +4,11 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!-- layout of intro screen -->
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/modules"
@@ -18,19 +18,19 @@
             android:scrollbars="vertical" />
 
         <Button
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="0.2"
             android:onClick="instructions"
             android:text="Instructions" />
     </LinearLayout>
-        <!-- Side navigation drawer = -->
-        <android.support.design.widget.NavigationView
-            android:id="@+id/navigation"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:menu="@menu/drawer" />
+    <!-- Side navigation drawer -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer" />
 
 </android.support.v4.widget.DrawerLayout>

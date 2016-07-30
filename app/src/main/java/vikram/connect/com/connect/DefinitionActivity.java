@@ -10,15 +10,19 @@ import android.webkit.WebViewClient;
  * Created by vikram on 4/21/16.
  */
 
-public class VideoActivity extends AppCompatActivity {
+public class DefinitionActivity extends AppCompatActivity {
     private WebView mwv;
+
+    /**
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.video_act);
+        setContentView(R.layout.activity_definition);
         mwv = (WebView) findViewById(R.id.web);
         mwv.getSettings().setJavaScriptEnabled(true);
         mwv.getSettings().setPluginState(WebSettings.PluginState.ON);
-        mwv.setWebViewClient(new WebViewClient(){
+        mwv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -26,8 +30,12 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     *
+     */
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         getSupportActionBar().setTitle(Data.videoWord + " Explained");
         mwv.loadUrl(Data.video);

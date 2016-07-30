@@ -30,7 +30,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
     @Override
     public boolean onLongClick(View view) {
         final Dialog dialog = new Dialog(act);
-        dialog.setContentView(R.layout.long_click);
+        dialog.setContentView(R.layout.edit_phrase_dialog);
         dialog.setTitle("Edit Phrase");
         final EditText phrTxt = (EditText) dialog.findViewById(R.id.edit);
         phrTxt.setText(word);
@@ -46,7 +46,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                         parent.remove(word);
                         Data.save(act);
                         act.onResume();
-                        act.command.setText(soFar);
+                        act.getCommand().setText(soFar);
                     } catch (JSONException e) {
                         Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
@@ -67,7 +67,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                     parent.remove(word);
                     Data.save(act);
                     act.onResume();
-                    act.command.setText(soFar);
+                    act.getCommand().setText(soFar);
                 } catch (JSONException e) {
                     Toast.makeText(act, "JSON Failed", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
@@ -106,7 +106,7 @@ public class EditLongClickListener implements Button.OnLongClickListener {
                     Toast.makeText(act, "Save Failed", Toast.LENGTH_LONG).show();
                 }
                 act.onResume();
-                act.command.setText(soFar);
+                act.getCommand().setText(soFar);
                 dialog.cancel();
             }
         });

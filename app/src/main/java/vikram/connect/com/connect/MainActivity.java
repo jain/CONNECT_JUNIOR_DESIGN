@@ -38,6 +38,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 
+/**
+ * Activity which is the main screen of the app
+ * User can construct phrase trees and input text
+ * This will be said out loud by push of a button
+ * User can request speech to be interpretted in this Activity too via speech to texh
+ */
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener, NavigationView.OnNavigationItemSelectedListener {
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
     private EditText command;
@@ -45,18 +51,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private HashMap<String, HashSet<String>> wordMap;
     private LinearLayout layout1;
     private static String typedString = "";
-
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+    private TextToSpeech tts;
 
-    TextToSpeech tts;
-
+    /**
+     * method called when this Activity is displayed again
+     */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         typedString = "";
         wordMap = new HashMap<String, HashSet<String>>();
+        // refill the map
         try {
             fillMap();
         } catch (JSONException e) {
@@ -65,24 +73,51 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         command.setText("");
     }
 
+    /**
+     * Creates the the layout for the activity
+     * Instantiates the elements of the layouts
+     * Instantiates key variables
+     *
+     * @param savedInstanceState
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // instantiate variables and get elements from layout file
         tts = new TextToSpeech(this, this);
         command = (EditText) findViewById(R.id.command);
         layout1 = (LinearLayout) findViewById(R.id.list1);
+        // set listener to edit text
         command.addTextChangedListener(new TextWatcher() {
+            /**
+             *
+             * @param charSequence entered text
+             * @param i
+             * @param i1
+             * @param i2
+             */
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
+            /**
+             *
+             * @param charSequence
+             * @param i
+             * @param i1
+             * @param i2
+             */
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
+            /**
+             *
+             * @param editable
+             */
             @Override
             public void afterTextChanged(Editable editable) {
                 MainActivity.typedString = editable.toString();
@@ -90,53 +125,66 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
         input = (TextView) findViewById(R.id.input);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_main);
         navigationView.setNavigationItemSelectedListener(this);
-
         mActivityTitle = getTitle().toString();
         setupDrawer();
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
+    /**
+     *
+     */
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely open state. */
+            /**
+             * Called when a drawer has settled in a completely open state. *
+             * @param drawerView
+             */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("Navigation!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            /** Called when a drawer has settled in a completely closed state. */
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             * @param view
+             */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    /**
+     * @param newConfig
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
+    /**
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -146,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         if (item.getTitle().toString().toLowerCase().contains("edit")) {
@@ -213,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     /**
      * generate the map for the phrase tree based on the json data loaded in the app
+     *
      * @param soFar
      * @param next
      * @throws JSONException
@@ -232,6 +285,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    /**
+     * @throws JSONException
+     */
     private void fillMap() throws JSONException {
         JSONObject phrases = Data.module.getJSONObject("phrases");
         Iterator<String> iter = phrases.keys();
@@ -248,6 +304,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    /**
+     * @param view
+     * @param clickableText
+     * @param listener
+     */
     public static void clickify(TextView view, final String clickableText, final ClickSpan.OnClickListener listener) {
         CharSequence text = view.getText();
         String string = text.toString();
@@ -270,6 +331,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    /**
+     *
+     */
     public void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -279,7 +343,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
 
-    public void voiceRec(View v) throws InterruptedException {
+    /**
+     * @param view
+     * @throws InterruptedException
+     */
+    public void voiceRec(View view) throws InterruptedException {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
         tts.speak("Please speak into the phone after the beep.", TextToSpeech.QUEUE_ADD, map);
@@ -302,6 +370,11 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     }
 
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE
@@ -318,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     public void onClick() {
                         Data.videoWord = wrd;
                         Data.video = "http://www.signasl.org/sign/" + wrd;
-                        Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+                        Intent intent = new Intent(MainActivity.this, DefinitionActivity.class);
                         startActivity(intent);
 
                     }
@@ -328,13 +401,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
-    public void speak(View v) {
+    /**
+     * @param view
+     */
+    public void speak(View view) {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "messageID");
         tts.speak(command.getText().toString(), TextToSpeech.QUEUE_FLUSH, map);
         int len = command.getText().toString().length();
         final MainActivity ma = this;
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            /**
+             *
+             * @param utteranceId
+             */
             @Override
             public void onStart(String utteranceId) {
                 runOnUiThread(new Runnable() {
@@ -348,6 +428,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 );
             }
 
+            /**
+             *
+             * @param utteranceId
+             */
             @Override
             public void onDone(String utteranceId) {
                 runOnUiThread(new Runnable() {
@@ -361,6 +445,10 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 );
             }
 
+            /**
+             *
+             * @param utteranceId
+             */
             @Override
             public void onError(String utteranceId) {
             }
@@ -368,11 +456,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         command.setText("");
     }
 
+    /**
+     * @param status
+     */
     @Override
     public void onInit(int status) {
         tts.setLanguage(Locale.US);
     }
 
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
         if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {

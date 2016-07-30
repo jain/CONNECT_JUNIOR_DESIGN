@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- nav drawer items from main screen -->
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navigation_item_1"
             android:checked="true"
-            android:title="Update Modules"/>
-        <!--android:icon="@drawable/update"-->
+            android:title="Update Modules" />
         <item
             android:id="@+id/navigation_item_2"
             android:checked="true"
-
-            android:title="Download New Modules"/>
-        <!--android:icon="@drawable/download"-->
+            android:title="Download New Modules" />
     </group>
 </menu>

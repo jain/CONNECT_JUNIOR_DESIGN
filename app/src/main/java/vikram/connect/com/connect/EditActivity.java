@@ -7,11 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,24 +18,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ *
+ */
 public class EditActivity extends AppCompatActivity {
-    private HashMap<String, String> map;
-    private ArrayList<String> links;
     private HashMap<String, HashSet<String>> wordMap;
     private HashMap<String, JSONObject> jsonMap;
     private LinearLayout layout1;
-    EditText command;
-    private static String cmon = "";
-
+    private EditText command;
+    private static String stringSoFar = "";
     private EditText phraseText;
-    private EditText wordText;
-    private EditText linkText;
     private Dialog dialog;
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,24 +45,46 @@ public class EditActivity extends AppCompatActivity {
         layout1 = (LinearLayout) findViewById(R.id.list2);
         command = (EditText) findViewById(R.id.command2);
         command.addTextChangedListener(new TextWatcher() {
+            /**
+             *
+             * @param charSequence
+             * @param i
+             * @param i1
+             * @param i2
+             */
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
+            /**
+             *
+             * @param charSequence
+             * @param i
+             * @param i1
+             * @param i2
+             */
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
+            /**
+             *
+             * @param editable
+             */
             @Override
             public void afterTextChanged(Editable editable) {
-                EditActivity.cmon = editable.toString();
+                EditActivity.stringSoFar = editable.toString();
                 remake(editable.toString());
             }
         });
-
     }
+
+    /**
+     *
+     * @param view
+     */
     public void addPhrase (View view){
         String phr = phraseText.getText().toString().trim().toLowerCase();
         if(phr.isEmpty()){
@@ -89,6 +111,11 @@ public class EditActivity extends AppCompatActivity {
         }
         dialog.cancel();
     }
+
+    /**
+     *
+     * @param view
+     */
     public void newPhrase(View view){
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.phrase);
@@ -99,10 +126,14 @@ public class EditActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+    /**
+     *
+     */
     @Override
     protected void onResume(){
         super.onResume();
-        cmon = "";
+        stringSoFar = "";
         wordMap = new HashMap<String, HashSet<String>>();
         jsonMap = new HashMap<String, JSONObject>();
         try {
@@ -113,16 +144,24 @@ public class EditActivity extends AppCompatActivity {
         remake("");
     }
 
+    /**
+     *
+     * @throws JSONException
+     */
     protected void genMap() throws JSONException {
         JSONObject linksJS = Data.module.getJSONObject("word links");
         Iterator iter = linksJS.keys();
         while (iter.hasNext()){
             String wrd = iter.next().toString();
-            map.put(wrd, linksJS.getString(wrd));
-            links.add(wrd);
         }
     }
 
+    /**
+     *
+     * @param soFar
+     * @param next
+     * @throws JSONException
+     */
     private void fillMapRecursion(String soFar, JSONObject next) throws JSONException {
         Iterator<String> iter = next.keys();
         while (iter.hasNext()) {
@@ -137,6 +176,14 @@ public class EditActivity extends AppCompatActivity {
             }
         }
     }
+    public EditText getCommand(){
+        return command;
+    }
+
+    /**
+     *
+     * @throws JSONException
+     */
     private void fillMap() throws JSONException {
         JSONObject phrases = Data.module.getJSONObject("phrases");
         Iterator<String> iter = phrases.keys();
@@ -153,10 +200,15 @@ public class EditActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     *
+     * @param soFar
+     */
     private void remake(String soFar) {
         layout1.removeAllViews();
         layout1.invalidate();
-        soFar = cmon.toLowerCase().trim();
+        soFar = stringSoFar.toLowerCase().trim();
         if (!wordMap.containsKey(soFar)){
             command.setSelection(command.getText().length());
             return;

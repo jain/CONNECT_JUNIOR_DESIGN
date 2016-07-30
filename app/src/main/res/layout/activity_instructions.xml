@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <!-- instruction screens which are just a bunch of textviews
+    pertaining to each featuer -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,11 +51,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:textSize="16sp"
         android:text="
 1) Click on the 3 lines on the top left corner\n
 2) Press the 'Download', 'Update', or 'Delete' button on a module from the list
-" />
+"
+        android:textSize="16sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,10 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="10dp"
-        android:textSize="16sp"
         android:text="
 1) Open the preferred module\n
 2) Press the 3 lines on the top left corner\n
-3) Press on a word you wish to change" />
-
+3) Press on a word you wish to change"
+        android:textSize="16sp" />
 </LinearLayout>

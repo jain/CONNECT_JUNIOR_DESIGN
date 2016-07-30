@@ -4,13 +4,13 @@
     android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!-- layout for phrase tree, dynamically generated -->
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -28,27 +28,27 @@
                 android:gravity="center"
                 android:orientation="vertical"></LinearLayout>
         </ScrollView>
-
+        <!-- text input area, where person can input text-->
         <EditText
             android:id="@+id/command"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-
+        <!--calls the text to speech-->
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="speak"
             android:text="Enter your Command!" />
-
+        <!-- output of speech to text -->
         <TextView
             android:id="@+id/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:textSize="20sp" />
-
+        <!-- call the speech to text -->
         <Button
             android:id="@+id/btn_speak"
             android:layout_width="match_parent"
@@ -59,12 +59,12 @@
 
     </LinearLayout>
 
-    <!-- Side navigation drawer = -->
+    <!-- Side navigation drawer -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_main"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/menu_main"/>
+        app:menu="@menu/edit" />
 
 </android.support.v4.widget.DrawerLayout>

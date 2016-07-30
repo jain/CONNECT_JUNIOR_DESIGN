@@ -29,7 +29,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Created by vikram on 4/21/16.
+ * Activity is first screen user sees on opening the app
+ * Activity is basically a recycler view with button on bottom
+ * Recycler View is inflated with data user has stored on his/her phone
  */
 public class SelectActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "MyTag";
@@ -39,15 +41,15 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     private RecyclerView modules;
 
     /**
-     * method to generate the view when initially loaded
+     * Method to generate the view when initially loaded
      *
-     * @param savedInstanceState
+     * @param savedInstanceState data stored in application
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         // set layout
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select);
+        setContentView(R.layout.activity_select);
         // instantiate imageview which will be used throughout the app for loading images
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SelectActivity.this));
         // instantiate navigation drawer
@@ -66,11 +68,11 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     /**
      * configure navigation drawer for app
      */
-    private void setupDrawer() {
+    public void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
             /**
              * Called when a drawer has settled in a completely open state.
-             * @param drawerView
+             * @param drawerView view of which drawer is child
              */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -80,7 +82,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
 
             /**
              * Called when a drawer has settled in a completely closed state.
-             * @param view
+             * @param view view of which drawer was child
              */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -95,7 +97,8 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
 
     /**
      * default method for when the configuation is changed, simply set to new config
-     * @param newConfig
+     *
+     * @param newConfig the new configuration
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -104,18 +107,20 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * default method for after the navigationd drawer is created
-     * @param savedInstanceState
+     * default method for after the navigation drawer is created
+     *
+     * @param savedInstanceState data which is saved inside drawer context
      */
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
     /**
      * default method for toggling item in navigation drawer
-     * @param item
+     *
+     * @param item menu item selected
      * @return
      */
     @Override
@@ -150,7 +155,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
      * when the activity is resumed, reload the data and recreate the recycler view
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         // reload the data
         try {
@@ -199,7 +204,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
      *
      * @throws JSONException
      */
-    private void recInit() throws JSONException {
+    public void recInit() throws JSONException {
         ArrayList<String[]> moduleNames = new ArrayList<String[]>();
         Iterator<String> it = Data.modules.keys();
         while (it.hasNext()) {
@@ -214,7 +219,7 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     /**
      * interpret the json data stored on the phone
      *
-     * @return
+     * @return json data stored on phone
      */
     public String loadJSONFromAsset() {
         String json = "";
@@ -246,11 +251,11 @@ public class SelectActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * If clicked on instructions button go to designated activity
+     * If clicked on activity_instructions button go to designated activity
      *
-     * @param v
+     * @param view clicked button
      */
-    public void instructions(View v) {
+    public void instructions(View view) {
         Intent intent = new Intent(SelectActivity.this, InstructionsActivity.class);
         startActivity(intent);
     }
