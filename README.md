@@ -1,4 +1,4 @@
-WELCOME TO THE CODE FOR CONNECT
+# CONNECT README
 
 All of the code resides in the app/src/main folder.
 
